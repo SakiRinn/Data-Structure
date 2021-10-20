@@ -11,12 +11,12 @@ typedef struct ConLQueue *LQueue;
 struct ConLQueue {
     Link Data;
     Pos Rear;
-    unsigned int Volume;
+    Length Volume;
 };
 
 /*Function Declaration*/
 //创建一个队列(链)
-LQueue CreateLQueue(unsigned int MaxSize);
+LQueue CreateLQueue(Length MaxSize);
 //队列(链)是否为空
 bool isEmptyLQ(LQueue Q);
 //添加(链)

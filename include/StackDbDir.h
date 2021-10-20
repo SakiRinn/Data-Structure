@@ -12,12 +12,12 @@ struct ConDStack {
     ElemType *Data; 
     Cursor Top1; 
     Cursor Top2; 
-    unsigned int MaxSize; 
+    Length MaxSize; 
 };
 
 /*Function Declaration*/
 //创建一个双向栈
-DStack CreateDStack(unsigned int MaxSize);
+DStack CreateDStack(Length MaxSize);
 //进栈
 bool DPush(DStack S, ElemType E, int tag);
 //出栈

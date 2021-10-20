@@ -1,9 +1,9 @@
 #include "StackDbDir.h"
 
-DStack CreateDStack(unsigned int MaxSize)
+DStack CreateDStack(Length MaxSize)
 {
     DStack S = (DStack) malloc(sizeof(struct ConDStack));
-    S->Data = (ElemType*) malloc(MaxSize*sizeof(ElemType));
+    S->Data = (ElemType*) malloc(MaxSize * sizeof(ElemType));
     S->Top1 = -1;
     S->Top2 = MaxSize;
     S->MaxSize = MaxSize;

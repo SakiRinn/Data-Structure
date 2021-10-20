@@ -11,7 +11,7 @@ typedef struct ConLStack *LStack;
 struct ConLStack {
     Link Data;
     Pos Top;
-    unsigned int Volume;
+    Length Volume;
 };
 
 /*Function Declaration*/

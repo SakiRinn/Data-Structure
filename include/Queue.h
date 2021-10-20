@@ -10,12 +10,12 @@ struct ConQueue {
     ElemType *Data;
     Cursor Front;
     Cursor Rear;
-    unsigned int MaxSize;
+    Length MaxSize;
 };
 
 /*Function Declaration*/
 //创建一个队列
-Queue CreateQueue(unsigned int MaxSize);
+Queue CreateQueue(Length MaxSize);
 //队列是否为满
 bool isFullQ(Queue Q);
 //队列是否为空

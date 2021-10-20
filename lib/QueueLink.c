@@ -1,6 +1,6 @@
 #include "QueueLink.h"
 
-LQueue CreateLQueue(unsigned int MaxSize)
+LQueue CreateLQueue(Length MaxSize)
 {
     LQueue Q = (LQueue) malloc(sizeof(struct ConLQueue));
     if(!Q)

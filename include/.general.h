@@ -9,6 +9,8 @@
 #define ERROR 0xABCDEF
 //下标
 typedef unsigned short Cursor;
+//长度
+typedef unsigned short Length;
 //数据类型
 typedef int ElemType;
 

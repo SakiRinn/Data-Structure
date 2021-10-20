@@ -9,12 +9,12 @@ typedef struct ConStack *Stack;
 struct ConStack {
     ElemType *Data; 
     Cursor Top; 
-    unsigned int MaxSize; 
+    Length MaxSize; 
 };
 
 /*Function Declaration*/
 //创建一个栈
-Stack CreateStack(unsigned int MaxSize);
+Stack CreateStack(Length MaxSize);
 //栈是否为满
 bool isFullS(Stack S);
 //栈是否为空

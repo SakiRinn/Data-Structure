@@ -1,11 +1,11 @@
 #include "Stack.h"
 
-Stack CreateStack(unsigned int MaxSize)
+Stack CreateStack(Length MaxSize)
 {
     Stack S = (Stack) malloc(sizeof(struct ConStack));
     if(!S)
         exit(EXIT_FAILURE);
-    S->Data = (ElemType*) malloc(MaxSize*sizeof(ElemType));
+    S->Data = (ElemType*) malloc(MaxSize * sizeof(ElemType));
     if(!S->Data)
         exit(EXIT_FAILURE);
     S->Top = -1; 
