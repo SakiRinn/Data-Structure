@@ -1,6 +1,6 @@
 /*链表*/
 #ifndef _LINK_H_
-    #define _LINK_H_
+#define _LINK_H_
 
 #include ".general.h"
 #define HEAD_NODE 0xABCABC

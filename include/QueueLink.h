@@ -1,6 +1,6 @@
 /*队列(链)*/
 #ifndef _QUEUE_LINK_H_
-    #define _QUEUE_LINK_H_
+#define _QUEUE_LINK_H_
 /* 说明：
 链队列的前指针Front就是链表头结点的指针。 */
 #include ".general.h"

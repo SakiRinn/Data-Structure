@@ -1,6 +1,6 @@
 /*栈*/
 #ifndef _STACK_H_
-    #define _STACK_H_
+#define _STACK_H_
 
 #include ".general.h"
 

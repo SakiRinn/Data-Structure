@@ -1,6 +1,6 @@
 /*栈(链)*/
 #ifndef _STACK_LINK_H_
-    #define _STACK_LINK_H_
+#define _STACK_LINK_H_
 /* 说明：
 链栈的栈顶指针就是链表头结点的指针。 */
 #include ".general.h"

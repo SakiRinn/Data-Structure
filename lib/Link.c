@@ -2,7 +2,7 @@
 
 Link CreateLink(void)
 {
-    Link L = (Link) malloc(sizeof(Node));
+    Link L = (Link) malloc(sizeof(struct Node));
     if(!L)
         exit(EXIT_FAILURE);
     L->elem = HEAD_NODE;
@@ -24,7 +24,7 @@ Pos Locate(Link L, Cursor subs)
 
 bool Insertpos(Pos pre, ElemType E)
 {
-    Pos tmp = (Pos) malloc(sizeof(Node));
+    Pos tmp = (Pos) malloc(sizeof(struct Node));
     if(!tmp)
         exit(EXIT_FAILURE);
     tmp->elem = E;
