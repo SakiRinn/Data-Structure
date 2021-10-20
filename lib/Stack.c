@@ -13,7 +13,7 @@ Stack CreateStack(unsigned int MaxSize)
     return S;
 }
 
-bool IsFullS(Stack S)
+bool isFullS(Stack S)
 {
     if(S->Top == S->MaxSize - 1)
         return true;
@@ -21,7 +21,7 @@ bool IsFullS(Stack S)
         return false;
 }
 
-bool IsEmptyS(Stack S)
+bool isEmptyS(Stack S)
 {
     if(S->Top == -1)
         return true;
@@ -31,7 +31,7 @@ bool IsEmptyS(Stack S)
 
 bool Push(Stack S, ElemType E)
 {
-    if(!IsFullS(S)) {
+    if(!isFullS(S)) {
         S->Top++;
         S->Data[S->Top] = E;
         return true;
@@ -41,7 +41,7 @@ bool Push(Stack S, ElemType E)
 
 ElemType Pop(Stack S)
 {
-    if(!IsEmptyS(S)) {
+    if(!isEmptyS(S)) {
         int re = S->Data[S->Top];
         S->Top--;
         return re;

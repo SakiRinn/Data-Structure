@@ -11,7 +11,7 @@ LStack CreateLStack(void)
     return S;
 }
 
-bool IsEmptyLS(LStack S)
+bool isEmptyLS(LStack S)
 {
     if(!S->Data->next)
         return true;
@@ -32,7 +32,7 @@ bool LPush(LStack S, ElemType E)
 
 ElemType LPop(LStack S)
 {
-    if(IsEmptyLS(S))
+    if(isEmptyLS(S))
         return ERROR;
     ElemType element = S->Top->elem;
     S->Top = Locate(S->Top, 1);

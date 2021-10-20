@@ -18,7 +18,7 @@ struct ConLQueue {
 //创建一个队列(链)
 LQueue CreateLQueue(unsigned int MaxSize);
 //队列(链)是否为空
-bool IsEmptyLQ(LQueue Q);
+bool isEmptyLQ(LQueue Q);
 //添加(链)
 bool AddLQ(LQueue Q, ElemType E);
 //删除(链)

@@ -11,7 +11,7 @@ LQueue CreateLQueue(unsigned int MaxSize)
     return Q;
 }
 
-bool IsEmptyLQ(LQueue Q)
+bool isEmptyLQ(LQueue Q)
 {
     if(!Q->Data->next)
         return true;
@@ -30,7 +30,7 @@ bool AddLQ(LQueue Q, ElemType E)
 
 ElemType DeleteLQ(LQueue Q)
 {
-    if(IsEmptyLQ(Q))
+    if(isEmptyLQ(Q))
         return ERROR;
     ElemType element = Q->Data->elem;
     if(Deletepos(Q->Data)) {

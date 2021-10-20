@@ -17,9 +17,9 @@ struct ConQueue {
 //创建一个队列
 Queue CreateQueue(unsigned int MaxSize);
 //队列是否为满
-bool IsFullQ(Queue Q);
+bool isFullQ(Queue Q);
 //队列是否为空
-bool IsEmptyQ(Queue Q);
+bool isEmptyQ(Queue Q);
 //添加
 bool AddQ(Queue Q, ElemType E);
 //删除：成功，返回被删除元素值；失败，返回ERROR

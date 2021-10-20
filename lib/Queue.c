@@ -14,7 +14,7 @@ Queue CreateQueue(unsigned int MaxSize)
     return Q;
 }
 
-bool IsFullQ(Queue Q)
+bool isFullQ(Queue Q)
 {
     if((Q->Rear + 1) % (Q->MaxSize) == Q->Front) 
         return true;
@@ -22,7 +22,7 @@ bool IsFullQ(Queue Q)
         return false;
 }
 
-bool IsEmptyQ(Queue Q)
+bool isEmptyQ(Queue Q)
 {
     if(Q->Front == Q->Rear)
         return true;
@@ -32,7 +32,7 @@ bool IsEmptyQ(Queue Q)
 
 bool AddQ(Queue Q, ElemType E)
 {
-    if(IsFullQ(Q))
+    if(isFullQ(Q))
         return false;
     else {
         Q->Rear = (Q->Rear + 1) % Q->MaxSize;
@@ -43,7 +43,7 @@ bool AddQ(Queue Q, ElemType E)
 
 ElemType DeleteQ(Queue Q)
 {
-    if(IsEmptyQ(Q)) 
+    if(isEmptyQ(Q)) 
         return ERROR;
     else {
         Q->Front = (Q->Front + 1) % Q->MaxSize;
