@@ -40,6 +40,4 @@ bool PrintLink(Link L);
 //销毁链表
 bool RemoveLink(Link L);
 
-/*Loop Link*/
-
 #endif

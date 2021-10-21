@@ -42,9 +42,9 @@ bool Push(Stack S, ElemType E)
 ElemType Pop(Stack S)
 {
     if(!isEmptyS(S)) {
-        int re = S->Data[S->Top];
+        int elem = S->Data[S->Top];
         S->Top--;
-        return re;
+        return elem;
     } else 
         return ERROR;
 }
