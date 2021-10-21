@@ -8,14 +8,17 @@
 /*Structure Declaration*/
 typedef struct Node *Pos;
 typedef struct Node *Link;
+typedef struct Node *Loop;
 struct Node {
     ElemType elem;
     Pos next;
 };
 
 /*Function Declaration*/
-//创建链表(带头结点)
+//创建链表
 Link CreateLink();
+//创建循环链表，需要一个初始元素
+Loop CreateLoop(ElemType E);
 //定位：返回链表L中第subs个结点的地址
 Pos Locate(Link L, Cursor subs);
 //插入(地址)：在地址pre后插入一个结点
@@ -31,7 +34,7 @@ bool Deletecur(Link L, Cursor subs);
 //查找：返回链表L中第subs个结点的元素值
 ElemType Search(Link L, Cursor subs);
 //返回链表长度
-int LinkLength(Link L);
+Length LinkLength(Link L);
 //打印链表
 bool PrintLink(Link L);
 //销毁链表

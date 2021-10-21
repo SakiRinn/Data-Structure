@@ -1,6 +1,6 @@
 #include "Link.h"
 
-Link CreateLink(void)
+Link CreateLink()
 {
     Link L = (Link)malloc(sizeof(struct Node));
     if (!L)
@@ -10,8 +10,18 @@ Link CreateLink(void)
     return L;
 }
 
+Loop CreateLoop(ElemType E)
+{
+    Link L = CreateLink();
+    Insertpos(L, E);
+    L->next->next = L;
+    return L;
+}
+
 Pos Locate(Link L, Cursor subs)
 {
+    if (!L || L->elem != HEAD_NODE)
+        return NULL;
     Pos ptr = L;
     for (int i = 0; i < subs; i++)
     {
@@ -36,6 +46,8 @@ bool Insertpos(Pos pre, ElemType E)
 
 bool Insertcur(Link L, Cursor subs, ElemType E)
 {
+    if (!L || L->elem != HEAD_NODE)
+        return false;
     Pos pre = Locate(L, subs);
     return Insertpos(pre, E);
 }
@@ -62,6 +74,8 @@ bool Deletepos(Pos pre)
 
 bool Deletecur(Link L, Cursor subs)
 {
+    if (!L || L->elem != HEAD_NODE)
+        return false;
     if (!subs)
         return false;
     Pos pre = Locate(L, subs - 1);
@@ -70,6 +84,8 @@ bool Deletecur(Link L, Cursor subs)
 
 ElemType Search(Link L, Cursor subs)
 {
+    if (!L || L->elem != HEAD_NODE)
+        return ERROR;
     Pos ptr = Locate(L, subs);
     if (!ptr)
         return ERROR;
@@ -77,8 +93,10 @@ ElemType Search(Link L, Cursor subs)
         return ptr->elem;
 }
 
-int LinkLength(Link L)
+Length LinkLength(Link L)
 {
+    if (!L || L->elem != HEAD_NODE)
+        return ERROR;
     int count = 0;
     Pos ptr = L;
     while (ptr->next)
