@@ -23,5 +23,7 @@ bool isEmptyLQ(LQueue Q);
 bool AddLQ(LQueue Q, ElemType E);
 //删除(链)
 ElemType DeleteLQ(LQueue Q);
+//销毁链队列
+bool RemoveLQ(LQueue Q);
 
 #endif

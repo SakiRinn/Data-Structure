@@ -1,44 +1,53 @@
 #include "StackLink.h"
 
-LStack CreateLStack(void)
+LStack CreateLStack()
 {
-    LStack S = (LStack) malloc(sizeof(struct ConLStack));
-    if(!S)
+    LStack S = (LStack)malloc(sizeof(struct ConLStack));
+    if (!S)
         exit(EXIT_FAILURE);
     S->Data = CreateLink();
     S->Top = NULL;
-    S->Volume = 0;
     return S;
 }
 
 bool isEmptyLS(LStack S)
 {
-    if(!S->Data->next)
+    if (S->Data->elem == HEAD_NODE && !S->Data->next)
         return true;
-    else 
+    else
         return false;
 }
 
-
 bool LPush(LStack S, ElemType E)
 {
-    if(Insertpos(S->Data, E)) {
+    if (Insertpos(S->Data, E))
+    {
         S->Top = Locate(S->Data, 1);
-        S->Volume++;
         return true;
-    } else 
+    }
+    else
         return false;
 }
 
 ElemType LPop(LStack S)
 {
-    if(isEmptyLS(S))
+    if (isEmptyLS(S))
         return ERROR;
-    ElemType element = S->Top->elem;
+    ElemType elem = S->Top->elem;
     S->Top = Locate(S->Top, 1);
-    if(Deletepos(S->Data)) {
-        S->Volume--;
-        return element;
-    } else 
+    if (Deletepos(S->Data))
+        return elem;
+    else
         return ERROR;
+}
+
+bool RemoveLStack(LStack S)
+{
+    if (RemoveLink(S->Data))
+    {
+        free(S);
+        return true;
+    }
+    else
+        return false;
 }

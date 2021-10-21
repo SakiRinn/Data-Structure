@@ -1,7 +1,7 @@
 /*链表*/
 #ifndef _LINK_H_
 #define _LINK_H_
-
+/* 说明：带头结点。 */
 #include ".general.h"
 #define HEAD_NODE 0xABCABC
 
@@ -15,7 +15,7 @@ struct Node {
 
 /*Function Declaration*/
 //创建链表(带头结点)
-Link CreateLink(void);
+Link CreateLink();
 //定位：返回链表L中第subs个结点的地址
 Pos Locate(Link L, Cursor subs);
 //插入(地址)：在地址pre后插入一个结点
@@ -34,5 +34,9 @@ ElemType Search(Link L, Cursor subs);
 int LinkLength(Link L);
 //打印链表
 bool PrintLink(Link L);
+//销毁链表
+bool RemoveLink(Link L);
+
+/*Loop Link*/
 
 #endif

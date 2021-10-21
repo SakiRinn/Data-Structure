@@ -2,8 +2,8 @@
 
 Link CreateLink(void)
 {
-    Link L = (Link) malloc(sizeof(struct Node));
-    if(!L)
+    Link L = (Link)malloc(sizeof(struct Node));
+    if (!L)
         exit(EXIT_FAILURE);
     L->elem = HEAD_NODE;
     L->next = NULL;
@@ -13,10 +13,11 @@ Link CreateLink(void)
 Pos Locate(Link L, Cursor subs)
 {
     Pos ptr = L;
-    for(int i = 0; i < subs; i++) {
-        if(!ptr->next)
+    for (int i = 0; i < subs; i++)
+    {
+        if (!ptr->next)
             return NULL;
-        else 
+        else
             ptr = ptr->next;
     }
     return ptr;
@@ -24,8 +25,8 @@ Pos Locate(Link L, Cursor subs)
 
 bool Insertpos(Pos pre, ElemType E)
 {
-    Pos tmp = (Pos) malloc(sizeof(struct Node));
-    if(!tmp)
+    Pos tmp = (Pos)malloc(sizeof(struct Node));
+    if (!tmp)
         exit(EXIT_FAILURE);
     tmp->elem = E;
     tmp->next = pre->next;
@@ -41,17 +42,17 @@ bool Insertcur(Link L, Cursor subs, ElemType E)
 
 bool Insertend(Link L, ElemType E)
 {
-    if(!L || L->elem != HEAD_NODE)
+    if (!L || L->elem != HEAD_NODE)
         return false;
     Pos pre = L;
-    while(pre->next)
+    while (pre->next)
         pre = pre->next;
     return Insertpos(pre, E);
 }
 
 bool Deletepos(Pos pre)
 {
-    if(!pre || !pre->next)
+    if (!pre || !pre->next)
         return false;
     Pos tmp = pre->next;
     pre->next = tmp->next;
@@ -61,7 +62,7 @@ bool Deletepos(Pos pre)
 
 bool Deletecur(Link L, Cursor subs)
 {
-    if(!subs)
+    if (!subs)
         return false;
     Pos pre = Locate(L, subs - 1);
     return Deletepos(pre);
@@ -70,9 +71,9 @@ bool Deletecur(Link L, Cursor subs)
 ElemType Search(Link L, Cursor subs)
 {
     Pos ptr = Locate(L, subs);
-    if(!ptr)
+    if (!ptr)
         return ERROR;
-    else 
+    else
         return ptr->elem;
 }
 
@@ -80,7 +81,8 @@ int LinkLength(Link L)
 {
     int count = 0;
     Pos ptr = L;
-    while(ptr->next) {
+    while (ptr->next)
+    {
         ptr = ptr->next;
         count++;
     }
@@ -89,13 +91,23 @@ int LinkLength(Link L)
 
 bool PrintLink(Link L)
 {
-    if(!L || L->elem != HEAD_NODE)
+    if (!L || L->elem != HEAD_NODE)
         return false;
     Pos tmp = L->next;
-    while(tmp) {
+    while (tmp)
+    {
         printf("%d ", tmp->elem);
         tmp = tmp->next;
     }
     putchar('\n');
+    return true;
+}
+
+bool RemoveLink(Link L)
+{
+    if(!L || L->elem != HEAD_NODE)
+        return false;
+    while (Deletepos(L));
+    free(L);
     return true;
 }

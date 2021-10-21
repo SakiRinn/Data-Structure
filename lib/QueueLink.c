@@ -39,3 +39,8 @@ ElemType DeleteLQ(LQueue Q)
     } else 
         return ERROR;
 }
+
+bool RemoveLQ(LQueue Q)
+{
+    return true;
+}
