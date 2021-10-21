@@ -42,5 +42,11 @@ ElemType DeleteLQ(LQueue Q)
 
 bool RemoveLQ(LQueue Q)
 {
-    return true;
+    if (RemoveLink(Q->Data))
+    {
+        free(Q);
+        return true;
+    }
+    else
+        return false;
 }
