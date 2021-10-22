@@ -4,6 +4,8 @@
 
 #include ".general.h"
 #include "StackLink.h"
+#include "QueueLink.h"
+#define NOINFO 0xDDF
 
 /*Structure Declaration*/
 typedef struct BiTNode *BiTree;
@@ -15,7 +17,7 @@ typedef struct BiTNode {
 
 /*Function Declaration*/
 //创建二叉树
-BiTree CreateBiTree();
+BiTree CreateBiTree(const int arr[], int len);
 //二叉树是否为空
 bool isEmptyBT(BiTree BT);
 

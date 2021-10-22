@@ -10,7 +10,7 @@ Link CreateLink()
     return L;
 }
 
-Loop CreateLoop(ElemType E)
+Loop CreateLoop(ETypeLink E)
 {
     Link L = CreateLink();
     Insertpos(L, E);
@@ -33,7 +33,7 @@ Pos Locate(Link L, Cursor subs)
     return ptr;
 }
 
-bool Insertpos(Pos pre, ElemType E)
+bool Insertpos(Pos pre, ETypeLink E)
 {
     Pos tmp = (Pos)malloc(sizeof(struct Node));
     if (!tmp)
@@ -44,7 +44,7 @@ bool Insertpos(Pos pre, ElemType E)
     return true;
 }
 
-bool Insertcur(Link L, Cursor subs, ElemType E)
+bool Insertcur(Link L, Cursor subs, ETypeLink E)
 {
     if (!L || L->elem != HEAD_NODE)
         return false;
@@ -52,7 +52,7 @@ bool Insertcur(Link L, Cursor subs, ElemType E)
     return Insertpos(pre, E);
 }
 
-bool Insertend(Link L, ElemType E)
+bool Insertend(Link L, ETypeLink E)
 {
     if (!L || L->elem != HEAD_NODE)
         return false;
@@ -82,7 +82,7 @@ bool Deletecur(Link L, Cursor subs)
     return Deletepos(pre);
 }
 
-ElemType Search(Link L, Cursor subs)
+ETypeLink Search(Link L, Cursor subs)
 {
     if (!L || L->elem != HEAD_NODE)
         return ERROR;
@@ -93,7 +93,7 @@ ElemType Search(Link L, Cursor subs)
         return ptr->elem;
 }
 
-Length LinkLength(Link L)
+Length LinkLen(Link L)
 {
     if (!L || L->elem != HEAD_NODE)
         return ERROR;
@@ -105,20 +105,6 @@ Length LinkLength(Link L)
         count++;
     }
     return count;
-}
-
-bool PrintLink(Link L)
-{
-    if (!L || L->elem != HEAD_NODE)
-        return false;
-    Pos tmp = L->next;
-    while (tmp)
-    {
-        printf("%d ", tmp->elem);
-        tmp = tmp->next;
-    }
-    putchar('\n');
-    return true;
 }
 
 bool RemoveLink(Link L)
