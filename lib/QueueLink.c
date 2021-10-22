@@ -18,7 +18,7 @@ bool isEmptyLQ(LQueue Q)
     else return false;
 }
 
-bool AddLQ(LQueue Q, ElemType E)
+bool AddLQ(LQueue Q, ETypeLQueue E)
 {
     if(Insertpos(Q->Rear, E)) {
         Q->Rear = Locate(Q->Rear, 1);
@@ -28,11 +28,11 @@ bool AddLQ(LQueue Q, ElemType E)
         return false;
 }
 
-ElemType DeleteLQ(LQueue Q)
+ETypeLQueue DeleteLQ(LQueue Q)
 {
     if(isEmptyLQ(Q))
         return ERROR;
-    ElemType element = Q->Data->elem;
+    ETypeLQueue element = Q->Data->elem;
     if(Deletepos(Q->Data)) {
         Q->Volume--;
         return element;

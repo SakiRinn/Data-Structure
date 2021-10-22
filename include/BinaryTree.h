@@ -4,13 +4,16 @@
 
 #include ".general.h"
 #include "StackLink.h"
+#define ETypeLQueue BiT_ETypeLQueue
 #include "QueueLink.h"
+#undef ETypeLQueue
 #define NOINFO 0xDDF
+typedef int ETypeBiT;
 
 /*Structure Declaration*/
 typedef struct BiTNode *BiTree;
 typedef struct BiTNode {
-    ElemType elem;
+    ETypeBiT elem;
     BiTree left;
     BiTree right;
 };

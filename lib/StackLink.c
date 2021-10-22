@@ -18,7 +18,7 @@ bool isEmptyLS(LStack S)
         return false;
 }
 
-bool LPush(LStack S, ElemType E)
+bool LPush(LStack S, ETypeLStack E)
 {
     if (Insertpos(S->Data, E))
     {
@@ -29,11 +29,11 @@ bool LPush(LStack S, ElemType E)
         return false;
 }
 
-ElemType LPop(LStack S)
+ETypeLStack LPop(LStack S)
 {
     if (isEmptyLS(S))
         return ERROR;
-    ElemType elem = S->Top->elem;
+    ETypeLStack elem = S->Top->elem;
     S->Top = Locate(S->Top, 1);
     if (Deletepos(S->Data))
         return elem;

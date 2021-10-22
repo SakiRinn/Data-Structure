@@ -5,6 +5,7 @@
 链栈的栈顶指针就是链表头结点的指针。 */
 #include ".general.h"
 #include "Link.h"
+typedef int ETypeLStack;
 
 /*Structure Declaration*/
 typedef struct ConLStack *LStack;
@@ -19,9 +20,9 @@ LStack CreateLStack();
 //栈(链)是否为空
 bool isEmptyLS(LStack S);
 //进栈(链)
-bool LPush(LStack S, ElemType E);
+bool LPush(LStack S, ETypeLStack E);
 //出栈(链)
-ElemType LPop(LStack S);
+ETypeLStack LPop(LStack S);
 //销毁链栈
 bool RemoveLStack(LStack S);
 
