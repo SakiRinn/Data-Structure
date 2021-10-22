@@ -1,6 +1,6 @@
 #include "BinaryTree.h"
 
-BiTree CreateBiTree(const ETypeBiT arr[], Length len)
+BiTree CreateBiTree(ETypeBiT arr[], Length len)
 {
     int i = 0;
     LQueue Q = CreateLQueue();

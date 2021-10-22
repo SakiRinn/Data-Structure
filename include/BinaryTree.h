@@ -18,7 +18,7 @@ struct BiTNode {
 
 /*Function Declaration*/
 //创建二叉树
-BiTree CreateBiTree(const ETypeBiT arr[], Length len);
+BiTree CreateBiTree(ETypeBiT arr[], Length len);
 //二叉树是否为空
 bool isEmptyBT(BiTree BT);
 
