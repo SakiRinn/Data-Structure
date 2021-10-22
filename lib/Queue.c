@@ -5,7 +5,7 @@ Queue CreateQueue(Length MaxSize)
     Queue Q = (Queue) malloc(sizeof(struct ConQueue));
     if(!Q)
         exit(EXIT_FAILURE);
-    Q->Data = (ElemType*) malloc((MaxSize+1) * sizeof(ElemType));
+    Q->Data = (ETypeQueue*) malloc((MaxSize+1) * sizeof(ETypeQueue));
     if(!Q->Data)
         exit(EXIT_FAILURE);
     Q->Front = -1;
@@ -30,7 +30,7 @@ bool isEmptyQ(Queue Q)
         return false;
 }
 
-bool AddQ(Queue Q, ElemType E)
+bool AddQ(Queue Q, ETypeQueue E)
 {
     if(isFullQ(Q))
         return false;
@@ -41,7 +41,7 @@ bool AddQ(Queue Q, ElemType E)
     }
 }
 
-ElemType DeleteQ(Queue Q)
+ETypeQueue DeleteQ(Queue Q)
 {
     if(isEmptyQ(Q)) 
         return ERROR;

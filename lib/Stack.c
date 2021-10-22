@@ -5,7 +5,7 @@ Stack CreateStack(Length MaxSize)
     Stack S = (Stack) malloc(sizeof(struct ConStack));
     if(!S)
         exit(EXIT_FAILURE);
-    S->Data = (ElemType*) malloc(MaxSize * sizeof(ElemType));
+    S->Data = (ETypeStack*) malloc(MaxSize * sizeof(ETypeStack));
     if(!S->Data)
         exit(EXIT_FAILURE);
     S->Top = -1; 
@@ -29,7 +29,7 @@ bool isEmptyS(Stack S)
         return false;
 }
 
-bool Push(Stack S, ElemType E)
+bool Push(Stack S, ETypeStack E)
 {
     if(!isFullS(S)) {
         S->Top++;
@@ -39,7 +39,7 @@ bool Push(Stack S, ElemType E)
         return false;
 }
 
-ElemType Pop(Stack S)
+ETypeStack Pop(Stack S)
 {
     if(!isEmptyS(S)) {
         int elem = S->Data[S->Top];
