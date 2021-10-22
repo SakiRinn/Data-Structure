@@ -12,9 +12,10 @@ add_subdirectory(header)
 add_subdirectory(lib)
 add_subdirectory(src)
 
-include_directories(include)
-include_directories(header)
 aux_source_directory(lib LIB_DIR)
 aux_source_directory(src SRC_DIR)
+
+include_directories(include)
+include_directories(header)
 
 add_executable(object main.cpp ${LIB_DIR} ${SRC_DIR})

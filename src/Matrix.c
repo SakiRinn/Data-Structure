@@ -150,14 +150,14 @@ bool PrintMatrix(Matrix M)
                 printf("%-2d ", 0);
             //行中补0
             while(ptrC->right) {
-                printf("%-2d ", ptrC->region.unit.value);
+                printf("%-2ld ", ptrC->region.unit.value);
                 int diff = ptrC->right->region.unit.column - ptrC->region.unit.column;
                 for(int k = 1; k < diff; k++) 
                     printf("%-2d ", 0);
                 ptrC = GLocateRight(ptrC, 1);
             }
             //行后补0
-            printf("%-2d ", ptrC->region.unit.value);
+            printf("%-2ld ", ptrC->region.unit.value);
             int excess = M->region.unit.column - ptrC->region.unit.column;
             for(int k = 0; k < excess; k++)
                 printf("%-2d ", 0);
