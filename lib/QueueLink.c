@@ -3,7 +3,7 @@
 LQueue CreateLQueue()
 {
     LQueue Q = (LQueue) malloc(sizeof(struct ConLQueue));
-    if(!Q)
+    if (!Q)
         exit(EXIT_FAILURE);
     Q->Data = CreateLink();
     Q->Rear = Q->Data;
@@ -12,28 +12,31 @@ LQueue CreateLQueue()
 
 bool isEmptyLQ(LQueue Q)
 {
-    if(!Q->Data->next)
+    if (!Q->Data->next)
         return true;
-    else return false;
+    else
+        return false;
 }
 
 bool AddLQ(LQueue Q, ETypeLQueue E)
 {
-    if(Insertpos(Q->Rear, E)) {
+    if (Insertend(Q->Data, E))
+    {
         Q->Rear = Locate(Q->Rear, 1);
         return true;
-    } else 
+    }
+    else 
         return false;
 }
 
 ETypeLQueue DeleteLQ(LQueue Q)
 {
-    if(isEmptyLQ(Q))
+    if (isEmptyLQ(Q))
         return ERROR;
-    ETypeLQueue elem = Q->Data->elem;
-    if(Deletepos(Q->Data)) {
+    ETypeLQueue elem = Q->Data->next->elem;
+    if (Deletepos(Q->Data))
         return elem;
-    } else 
+    else
         return ERROR;
 }
 

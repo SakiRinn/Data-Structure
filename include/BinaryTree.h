@@ -4,7 +4,6 @@
 
 #include ".general.h"
 #include "StackLink.h"
-#include "QueueLink.h"
 #define NOINFO 0xDDF
 typedef long ETypeBiT;
 
@@ -16,21 +15,24 @@ struct BiTNode {
     BiTree right;
 };
 
-/*Function Declaration*/
-//创建二叉树
-BiTree CreateBiTree(ETypeBiT arr[], Length len);
-//二叉树是否为空
-bool isEmptyBT(BiTree BT);
+/*Typedef Override*/
+#define long BiTree
+#include "QueueLink.h"
+#undef BiTree
 
-/*Recursion*/
+/*Create*/
+//层序创建
+BiTree CreateBiTLevel(ETypeBiT arr[], Length len);
+//先序创建(递归)
+BiTree reCreateBiTPre(ETypeBiT arr[], Length len);
+
+/*Traverse*/
 //前序遍历(递归)
 void rePreTrav(BiTree BT);
 //中序遍历(递归)
 void reInTrav(BiTree BT);
 //后序遍历(递归)
 void rePostTrav(BiTree BT);
-
-/*Non Recursion*/
 //前序遍历
 void PreTrav(BiTree BT);
 //中序遍历

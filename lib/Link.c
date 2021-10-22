@@ -35,6 +35,8 @@ Pos Locate(Link L, Cursor subs)
 
 bool Insertpos(Pos pre, ETypeLink E)
 {
+    if (!pre)
+        return false;
     Pos tmp = (Pos)malloc(sizeof(struct Node));
     if (!tmp)
         exit(EXIT_FAILURE);
