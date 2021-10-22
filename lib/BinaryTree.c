@@ -3,20 +3,20 @@
 BiTree CreateBiTree(const ETypeBiT arr[], Length len)
 {
     int i = 0;
-    LQueue Q = createLQueue();
+    LQueue Q = CreateLQueue();
     //first
     if(arr[i] == NOINFO || len < 1)
         return NULL;
     BiTree BT = (BiTree) malloc(sizeof(struct BiTNode));
     BT->elem = arr[i];
     BT->left = BT->right = NULL;
-    AddLQ(Q, BT);
+    AddLQ(Q, (ETypeLQueue)BT);
     i++;
     //other
     BiTree BTptr;
     while (!isEmptyLQ(Q))
     {
-        BTptr = DeleteLQ(Q);
+        BTptr = (BiTree) DeleteLQ(Q);
         //left
         if(i >= len)
             break;
@@ -25,7 +25,7 @@ BiTree CreateBiTree(const ETypeBiT arr[], Length len)
             BTptr->left = (BiTree) malloc(sizeof(struct BiTNode));
             BTptr->left->elem = arr[i];
             BTptr->left->left = BTptr->left->right = NULL;
-            AddLQ(Q, BTptr->left);
+            AddLQ(Q, (ETypeLQueue)BTptr->left);
             i++;
         }
         //right
@@ -36,7 +36,7 @@ BiTree CreateBiTree(const ETypeBiT arr[], Length len)
             BTptr->right = (BiTree) malloc(sizeof(struct BiTNode));
             BTptr->right->elem = arr[i];
             BTptr->right->left = BTptr->right->right = NULL;
-            AddLQ(Q, BTptr->right);
+            AddLQ(Q, (ETypeLQueue)BTptr->right);
             i++;
         }
     }

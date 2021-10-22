@@ -11,6 +11,6 @@
 //将中缀表达式转换成后缀表达式 
 Link RevPolish(char expr[]);
 //后缀表达式求值 
-int CalcRev(Link revp);
+ElemType CalcRev(Link revp);
 
 #endif

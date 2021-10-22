@@ -41,7 +41,7 @@ Link RevPolish(char expr[])
         }
         /*next*/
         if(ptr[1] == '\0') {
-            while(opestack->Volume) {
+            while(!isEmptyLS(opestack)) {
                 ElemType num = LPop(opestack) + OPTOR;
                 if(num != ERROR)
                     Insertend(res, num);
@@ -61,7 +61,7 @@ ElemType CalcRev(Link revp)
     Pos ptr = revp->next;
     while(ptr) {
         if(ptr->elem >= '*' + OPTOR && ptr->elem <= '/' + OPTOR) {
-            if(calcstack->Volume < 2)
+            if(LStackLen(calcstack) < 2)
                 return ERROR;
             int ope = ptr->elem - OPTOR;
             ElemType temp = LPop(calcstack);
