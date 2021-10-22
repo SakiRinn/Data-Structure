@@ -1,9 +1,7 @@
-#include "BinaryTree.h"
+#include "Link.h"
 
 int main()
 {
-    ETypeBiT arr[10] {5, 2, 1, 3, NOINFO, 6, 1, 2, NOINFO, 3};
-    BiTree BT = CreateBiTree(arr, 10);
-    printf("hello\n");
+    printf("%d\n", HEAD_NODE);
     return 0;
 }
