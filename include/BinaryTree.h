@@ -4,23 +4,25 @@
 
 #include ".general.h"
 #include "StackLink.h"
-#define ETypeLQueue BiT_ETypeLQueue
-#include "QueueLink.h"
-#undef ETypeLQueue
 #define NOINFO 0xDDF
 typedef int ETypeBiT;
 
 /*Structure Declaration*/
 typedef struct BiTNode *BiTree;
-typedef struct BiTNode {
+struct BiTNode {
     ETypeBiT elem;
     BiTree left;
     BiTree right;
 };
 
+/*Override Typedef*/
+#define long BiTree
+#include "QueueLink.h"
+#undef long
+
 /*Function Declaration*/
 //创建二叉树
-BiTree CreateBiTree(const int arr[], int len);
+BiTree CreateBiTree(const ETypeBiT arr[], Length len);
 //二叉树是否为空
 bool isEmptyBT(BiTree BT);
 

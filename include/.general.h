@@ -6,12 +6,12 @@
 #include <stdbool.h>
 
 //错误返回值
-#define ERROR 0xABCDEF
+#define ERROR 0x1FFF
 //下标
 typedef unsigned short Cursor;
 //长度
 typedef unsigned short Length;
 //数据类型
-typedef int ElemType;
+typedef long ElemType;
 
 #endif

@@ -3,7 +3,7 @@
 #define _QUEUE_H_
 
 #include ".general.h"
-typedef int ETypeQueue;
+typedef long ETypeQueue;
 
 /*Structure Declaration*/
 typedef struct ConQueue *Queue;

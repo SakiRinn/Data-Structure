@@ -4,7 +4,7 @@
 /* 说明：带头结点。 */
 #include ".general.h"
 #define HEAD_NODE 0xABCABC
-typedef int ETypeLink;
+typedef long ETypeLink;
 
 /*Structure Declaration*/
 typedef struct Node *Pos;

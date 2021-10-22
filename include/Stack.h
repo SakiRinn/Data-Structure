@@ -3,7 +3,7 @@
 #define _STACK_H_
 
 #include ".general.h"
-typedef int ETypeStack;
+typedef long ETypeStack;
 
 /*Structure Declaration*/
 typedef struct ConStack *Stack;

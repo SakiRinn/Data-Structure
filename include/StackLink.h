@@ -5,7 +5,7 @@
 链栈的栈顶指针就是链表头结点的指针。 */
 #include ".general.h"
 #include "Link.h"
-typedef int ETypeLStack;
+typedef long ETypeLStack;
 
 /*Structure Declaration*/
 typedef struct ConLStack *LStack;
@@ -25,5 +25,7 @@ bool LPush(LStack S, ETypeLStack E);
 ETypeLStack LPop(LStack S);
 //销毁链栈
 bool RemoveLStack(LStack S);
+//返回链栈长度
+Length LStackLen(LStack S);
 
 #endif

@@ -1,13 +1,12 @@
 #include "QueueLink.h"
 
-LQueue CreateLQueue(Length MaxSize)
+LQueue CreateLQueue()
 {
     LQueue Q = (LQueue) malloc(sizeof(struct ConLQueue));
     if(!Q)
         exit(EXIT_FAILURE);
     Q->Data = CreateLink();
     Q->Rear = Q->Data;
-    Q->Volume = 0;
     return Q;
 }
 
@@ -22,7 +21,6 @@ bool AddLQ(LQueue Q, ETypeLQueue E)
 {
     if(Insertpos(Q->Rear, E)) {
         Q->Rear = Locate(Q->Rear, 1);
-        Q->Volume++;
         return true;
     } else 
         return false;
@@ -32,10 +30,9 @@ ETypeLQueue DeleteLQ(LQueue Q)
 {
     if(isEmptyLQ(Q))
         return ERROR;
-    ETypeLQueue element = Q->Data->elem;
+    ETypeLQueue elem = Q->Data->elem;
     if(Deletepos(Q->Data)) {
-        Q->Volume--;
-        return element;
+        return elem;
     } else 
         return ERROR;
 }
@@ -49,4 +46,9 @@ bool RemoveLQ(LQueue Q)
     }
     else
         return false;
+}
+
+Length LQueueLen(LQueue Q)
+{
+    return LinkLen(Q->Data);
 }

@@ -51,3 +51,8 @@ bool RemoveLStack(LStack S)
     else
         return false;
 }
+
+Length LStackLen(LStack S)
+{
+    return LinkLen(S->Data);
+}
