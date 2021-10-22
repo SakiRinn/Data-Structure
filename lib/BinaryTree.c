@@ -40,5 +40,6 @@ BiTree CreateBiTree(ETypeBiT arr[], Length len)
             i++;
         }
     }
+    RemoveLQ(Q);
     return BT;
 }
