@@ -72,12 +72,13 @@ BiTree PreCreateBiT(ETypeBiT arr[], Length len)
     LStack S = CreateLStack();
     // first
     BiTree BT = (BiTree)malloc(sizeof(struct BiTNode));
-    BT->elem = arr[i];
-    BT->left = BT->right = NULL;
+    BiTree BTemp = BT;
+    LPush(S, (ETypeBiT)BTemp);
+    BTemp->elem = arr[i];
+    BTemp->left = BTemp->right = NULL;
     i++;
     // other
-    BiTree BTemp = BT;
-    while (i < len && (!isEmptyLS(S) || BTemp == BT))
+    while (i < len && !isEmptyLS(S))
     {
         // left
         while (i < len && !BTemp->left)
@@ -85,7 +86,7 @@ BiTree PreCreateBiT(ETypeBiT arr[], Length len)
             if (arr[i] != NOINFO)
             {
                 BTemp->left = (BiTree)malloc(sizeof(struct BiTNode));
-                LPush(S, (long)BTemp);
+                LPush(S, (ETypeBiT)BTemp);
                 BTemp = BTemp->left;
                 BTemp->elem = arr[i];
                 BTemp->left = BTemp->right = NULL;
@@ -115,6 +116,7 @@ BiTree PreCreateBiT(ETypeBiT arr[], Length len)
             continue;
         }
     }
+    RemoveLStack(S);
     return BT;
 }
 

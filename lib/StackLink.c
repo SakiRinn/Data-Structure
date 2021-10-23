@@ -12,7 +12,7 @@ LStack CreateLStack()
 
 bool isEmptyLS(LStack S)
 {
-    if (S->Data->elem == HEAD_NODE && !S->Data->next)
+    if (S->Data->elem == HEAD_NODE && !S->Top)
         return true;
     else
         return false;
