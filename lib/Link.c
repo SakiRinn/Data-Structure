@@ -20,7 +20,7 @@ Loop CreateLoop(ETypeLink E)
 
 Pos Locate(Link L, Cursor subs)
 {
-    if (!L || L->elem != HEAD_NODE)
+    if (!L)
         return NULL;
     Pos ptr = L;
     for (int i = 0; i < subs; i++)
