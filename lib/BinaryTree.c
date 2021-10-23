@@ -107,14 +107,10 @@ BiTree PreCreateBiT(ETypeBiT arr[], Length len)
             BTemp = BTemp->right;
             BTemp->elem = arr[i];
             BTemp->left = BTemp->right = NULL;
-            i++;
         }
         else
-        {
             BTemp = (BiTree)LPop(S);
-            i++;
-            continue;
-        }
+        i++;
     }
     RemoveLStack(S);
     return BT;
