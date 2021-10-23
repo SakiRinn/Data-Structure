@@ -4,6 +4,7 @@
 
 #include ".general.h"
 #include "StackLink.h"
+#include "QueueLink.h"
 #define NOINFO 0xDDF
 typedef long ETypeBiT;
 
@@ -14,11 +15,6 @@ struct BiTNode {
     BiTree left;
     BiTree right;
 };
-
-/*Typedef Override*/
-#define long BiTree
-#include "QueueLink.h"
-#undef BiTree
 
 /*Create*/
 //层序创建

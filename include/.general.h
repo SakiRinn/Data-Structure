@@ -11,7 +11,7 @@
 typedef unsigned short Cursor;
 //长度
 typedef unsigned short Length;
-//数据类型
+//数据类型(EType)
 typedef long ElemType;
 
 #endif

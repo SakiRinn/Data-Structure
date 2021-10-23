@@ -10,7 +10,7 @@ BiTree LevelCreateBiT(ETypeBiT arr[], Length len)
     BiTree BT = (BiTree)malloc(sizeof(struct BiTNode));
     BT->elem = arr[i];
     BT->left = BT->right = NULL;
-    AddLQ(Q, BT);
+    AddLQ(Q, (ETypeBiT)BT);
     i++;
     // other
     BiTree BTptr;
@@ -25,7 +25,7 @@ BiTree LevelCreateBiT(ETypeBiT arr[], Length len)
             BTptr->left = (BiTree)malloc(sizeof(struct BiTNode));
             BTptr->left->elem = arr[i];
             BTptr->left->left = BTptr->left->right = NULL;
-            AddLQ(Q, BTptr->left);
+            AddLQ(Q, (ETypeBiT)BTptr->left);
         }
         i++;
         // right
@@ -36,7 +36,7 @@ BiTree LevelCreateBiT(ETypeBiT arr[], Length len)
             BTptr->right = (BiTree)malloc(sizeof(struct BiTNode));
             BTptr->right->elem = arr[i];
             BTptr->right->left = BTptr->right->right = NULL;
-            AddLQ(Q, BTptr->right);
+            AddLQ(Q, (ETypeBiT)BTptr->right);
         }
         i++;
     }
@@ -66,18 +66,56 @@ void rePreCreateBiT(BiTree *BT)
 
 BiTree PreCreateBiT(ETypeBiT arr[], Length len)
 {
+    if (len < 1 || arr[0] == NOINFO)
+        return NULL;
     int i = 0;
+    LStack S = CreateLStack();
     // first
     BiTree BT = (BiTree)malloc(sizeof(struct BiTNode));
     BT->elem = arr[i];
     BT->left = BT->right = NULL;
     i++;
     // other
-    BiTree BTptr = BT;
-    while (BTptr)
+    BiTree BTemp = BT;
+    while (i < len && (!isEmptyLS(S) || BTemp == BT))
     {
-        
+        // left
+        while (i < len && !BTemp->left)
+        {
+            if (arr[i] != NOINFO)
+            {
+                BTemp->left = (BiTree)malloc(sizeof(struct BiTNode));
+                LPush(S, (long)BTemp);
+                BTemp = BTemp->left;
+                BTemp->elem = arr[i];
+                BTemp->left = BTemp->right = NULL;
+                i++;
+            }
+            else 
+            {
+                i++;
+                break;
+            }
+        }
+        // right
+        if (i >= len)
+            break;
+        if (arr[i] != NOINFO)
+        {
+            BTemp->right = (BiTree)malloc(sizeof(struct BiTNode));
+            BTemp = BTemp->right;
+            BTemp->elem = arr[i];
+            BTemp->left = BTemp->right = NULL;
+            i++;
+        }
+        else
+        {
+            BTemp = (BiTree)LPop(S);
+            i++;
+            continue;
+        }
     }
+    return BT;
 }
 
 void rePreTrav(BiTree BT)

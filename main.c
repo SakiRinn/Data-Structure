@@ -3,8 +3,7 @@
 
 int main()
 {
-    ETypeBiT arr[] = {5, 2, 1, 3, NOINFO, 6, 10, 12, NOINFO, 3, 11, 7, NOINFO};
-    BiTree BT;
-    rePreCreateBiT(&BT);
+    ETypeBiT arr[] = {1, 2, NOINFO, 3, 4, NOINFO, NOINFO, 5, NOINFO, NOINFO, 6, 7, NOINFO, NOINFO, 8};
+    BiTree BT = PreCreateBiT(arr, 15);
     return 0;
 }
