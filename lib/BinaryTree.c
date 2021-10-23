@@ -1,6 +1,6 @@
 #include "BinaryTree.h"
 
-BiTree CreateBiTLevel(ETypeBiT arr[], Length len)
+BiTree LevelCreateBiT(ETypeBiT arr[], Length len)
 {
     int i = 0;
     LQueue Q = CreateLQueue();
@@ -40,24 +40,45 @@ BiTree CreateBiTLevel(ETypeBiT arr[], Length len)
         }
         i++;
     }
-    RemoveLQ(Q);
+    RemoveLQueue(Q);
     return BT;
 }
 
-BiTree reCreateBiTPre(ETypeBiT arr[], Length len)
+void rePreCreateBiT(BiTree *BT)
+{
+    // input
+    ETypeBiT elem;
+    printf("input: ");
+    if (scanf("%ld", &elem) == 0)
+    {
+        printf("No Info.\n");
+        while (getchar() != '\n');
+        return;
+    }
+    // create
+    *BT = (BiTree)malloc(sizeof(struct BiTNode));
+    if (!*BT)
+        exit(EXIT_FAILURE);
+    (*BT)->elem = elem;
+    rePreCreateBiT(&(*BT)->left);
+    rePreCreateBiT(&(*BT)->right);
+}
+
+BiTree PreCreateBiT(ETypeBiT arr[], Length len)
 {
     int i = 0;
-    LQueue Q = CreateLQueue();
     // first
-    if (arr[i] == NOINFO || len < 1)
-        return NULL;
     BiTree BT = (BiTree)malloc(sizeof(struct BiTNode));
     BT->elem = arr[i];
     BT->left = BT->right = NULL;
-    AddLQ(Q, (ETypeLQueue)BT);
     i++;
+    // other
+    BiTree BTptr = BT;
+    while (BTptr)
+    {
+        
+    }
 }
-
 
 void rePreTrav(BiTree BT)
 {

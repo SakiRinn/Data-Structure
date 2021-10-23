@@ -22,9 +22,11 @@ struct BiTNode {
 
 /*Create*/
 //层序创建
-BiTree CreateBiTLevel(ETypeBiT arr[], Length len);
+BiTree LevelCreateBiT(ETypeBiT arr[], Length len);
 //先序创建(递归)
-BiTree reCreateBiTPre(ETypeBiT arr[], Length len);
+void rePreCreateBiT(BiTree *BT);
+//先序创建
+BiTree PreCreateBiT(ETypeBiT arr[], Length len);
 
 /*Traverse*/
 //前序遍历(递归)

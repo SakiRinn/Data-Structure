@@ -40,7 +40,7 @@ ETypeLQueue DeleteLQ(LQueue Q)
         return ERROR;
 }
 
-bool RemoveLQ(LQueue Q)
+bool RemoveLQueue(LQueue Q)
 {
     if (RemoveLink(Q->Data))
     {

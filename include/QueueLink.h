@@ -24,7 +24,7 @@ bool AddLQ(LQueue Q, ETypeLQueue E);
 //删除(链)
 ETypeLQueue DeleteLQ(LQueue Q);
 //销毁链队列
-bool RemoveLQ(LQueue Q);
+bool RemoveLQueue(LQueue Q);
 //返回链队列长度
 Length LQueueLen(LQueue Q);
 
