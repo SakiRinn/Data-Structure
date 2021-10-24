@@ -148,8 +148,6 @@ void rePostTrav(BiTree BT)
 
 void PreTrav(BiTree BT)
 {
-    if (!BT)
-        return;
     LStack S = CreateLStack();
     BiTree BTemp = BT;
     while (BTemp || !isEmptyLS(S))
@@ -164,4 +162,53 @@ void PreTrav(BiTree BT)
         // right
         BTemp = ((BiTree)LPop(S))->right;
     }
+}
+
+void InTrav(BiTree BT)
+{
+    LStack S = CreateLStack();
+    BiTree BTemp = BT;
+    while (BTemp || !isEmptyLS(S))
+    {
+        // left
+        while (BTemp)
+        {
+            LPush(S, (ETypeLStack)BTemp);
+            BTemp = BTemp->left;
+        }
+        // right
+        BTemp = (BiTree)LPop(S);
+        printf("%ld ", BTemp->elem);
+        BTemp = BTemp->right;
+    }
+}
+
+void PostTrav(BiTree BT)
+{
+    LStack S = CreateLStack(), SBrc = CreateLStack();
+    BiTree BTemp = BT;
+    while (BTemp || !isEmptyLS(S))
+    {
+        // left
+        while (BTemp)
+        {
+            LPush(S, (ETypeLStack)BTemp);
+            if (BTemp->left && BTemp->right)
+                LPush(SBrc, (ETypeLStack)BTemp);
+            BTemp = BTemp->left;
+        }
+        // right
+        BTemp = (BiTree)LPop(S);
+        LPush(S, (ETypeLStack)BTemp);
+        if (!BTemp->left && !BTemp->right)
+        {
+            // output
+            BiTree BTbrc = (BiTree)LPop(SBrc);
+            while (!isEmptyLS(S) && (BiTree)S->Top->elem != BTbrc)
+                printf("%ld ", ((BiTree)LPop(S))->elem);
+        }
+        BTemp = BTemp->right;
+    }
+    RemoveLStack(S);
+    RemoveLStack(SBrc);
 }

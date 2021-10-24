@@ -39,3 +39,7 @@ void InTrav(BiTree BT);
 void PostTrav(BiTree BT);
 
 #endif
+
+/* 递归转非递归：
+ * 利用栈，左入栈右出栈。
+ * 队列同理。 */
