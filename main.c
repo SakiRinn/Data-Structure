@@ -15,7 +15,11 @@ int main()
     putchar('\n');
     rePostTrav(BT);
     putchar('\n');
-    PostTrav(BT);
+    PostTrav1(BT);
+    putchar('\n');
+    PostTrav2(BT);
+    putchar('\n');
+    PostTrav3(BT);
     putchar('\n');
     return 0;
 }

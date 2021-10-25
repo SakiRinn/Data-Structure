@@ -183,7 +183,7 @@ void InTrav(BiTree BT)
     }
 }
 
-void PostTrav(BiTree BT)
+void PostTrav1(BiTree BT)
 {
     LStack S = CreateLStack(), SBrc = CreateLStack();
     BiTree BTemp = BT;
@@ -198,17 +198,74 @@ void PostTrav(BiTree BT)
             BTemp = BTemp->left;
         }
         // right
-        BTemp = (BiTree)LPop(S);
-        LPush(S, (ETypeLStack)BTemp);
-        if (!BTemp->left && !BTemp->right)
+        BTemp = (BiTree)S->Top->elem;
+        BTemp = BTemp->right;
+        // output
+        if (!BTemp)
         {
-            // output
             BiTree BTbrc = (BiTree)LPop(SBrc);
             while (!isEmptyLS(S) && (BiTree)S->Top->elem != BTbrc)
                 printf("%ld ", ((BiTree)LPop(S))->elem);
         }
-        BTemp = BTemp->right;
     }
     RemoveLStack(S);
     RemoveLStack(SBrc);
+    //一般结点出栈后再放入(查看栈顶)。
+    //有左右子树的结点，放入Branch栈中。
+    //遇到叶结点，弹出栈，直到栈顶为Branch的顶(弹出)为止。
+}
+
+void PostTrav2(BiTree BT)
+{
+    LStack S = CreateLStack();
+    BiTree BTemp = BT, BTprt = NULL;
+    while (BTemp || !isEmptyLS(S))
+    {
+        // left
+        while (BTemp)
+        {
+            LPush(S, (ETypeLStack)BTemp);
+            BTemp = BTemp->left;
+        }
+        // right
+        BTemp = (BiTree)S->Top->elem;
+        BTemp = BTemp->right;
+        // output
+        if (!BTemp || BTemp == BTprt)
+        {
+            BTprt = (BiTree)LPop(S);
+            printf("%ld ", BTprt->elem);
+            BTemp = NULL;
+        }
+    }
+    RemoveLStack(S);
+    //共同点：输出完BTemp必须是NULL
+    //到叶结点时，输出且出栈，并用BTprt记录本次输出的结点。
+    //上一个结点的右指针与BTprt相同，说明已经输出完其右子树，故进行输出(即后序)。
+}
+
+void PostTrav3(BiTree BT)
+{
+    LStack S = CreateLStack(), Sprt = CreateLStack();
+    BiTree BTemp = BT;
+    while (BTemp || !isEmptyLS(S))
+    {
+        // right
+        while (BTemp)
+        {
+            LPush(Sprt, (ETypeLStack)BTemp);
+            LPush(S, (ETypeLStack)BTemp);
+            BTemp = BTemp->right;
+        }
+        // left
+        BTemp = ((BiTree)LPop(S))->left;
+    }
+    // output
+    while (!isEmptyLS(Sprt))
+        printf("%ld ", ((BiTree)LPop(Sprt))->elem);
+    RemoveLStack(S);
+    RemoveLStack(Sprt);
+    //先序遍历是：根-->左-->右，而后序遍历是：左-->右-->根。
+    //把先序遍历稍微修改变成：根-->右-->左，就发现它正好是后序遍历的倒序。
+    //把打印节点变成压入一个临时的栈中，结束后再对这个临时的栈依次弹栈打印节点即可。
 }

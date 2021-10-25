@@ -35,8 +35,12 @@ void rePostTrav(BiTree BT);
 void PreTrav(BiTree BT);
 //中序遍历
 void InTrav(BiTree BT);
-//后序遍历
-void PostTrav(BiTree BT);
+//后序遍历：根栈
+void PostTrav1(BiTree BT);
+//后序遍历：记录结点
+void PostTrav2(BiTree BT);
+//后序遍历：先序倒序
+void PostTrav3(BiTree BT);
 
 #endif
 
