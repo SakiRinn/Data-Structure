@@ -5,17 +5,17 @@ enable_testing()
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 
 add_subdirectory(include)
-add_subdirectory(header)
-add_subdirectory(lib)
 add_subdirectory(src)
+add_subdirectory(header)
+add_subdirectory(app)
 
-aux_source_directory(lib LIB_DIR)
 aux_source_directory(src SRC_DIR)
+aux_source_directory(app APP_DIR)
 
 include_directories(include)
 include_directories(header)
 
-add_executable(object main.c ${LIB_DIR} ${SRC_DIR})
+add_executable(object main.c ${SRC_DIR} ${APP_DIR})
