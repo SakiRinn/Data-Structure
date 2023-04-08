@@ -1,4 +1,5 @@
 #include "Calculator.h"
+#include "StackLink.h"
 
 Link RevPolish(char expr[])
 {
@@ -61,7 +62,7 @@ ElemType CalcRev(Link revp)
     Pos ptr = revp->next;
     while(ptr) {
         if(ptr->elem >= '*' + OPTOR && ptr->elem <= '/' + OPTOR) {
-            if(LStackLen(calcstack) < 2)
+            if(LStack_len(calcstack) < 2)
                 return ERROR;
             int ope = ptr->elem - OPTOR;
             ElemType temp = LStack_pop(calcstack);
