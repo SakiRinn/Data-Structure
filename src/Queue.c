@@ -1,12 +1,11 @@
 #include "Queue.h"
 #include ".general.h"
 
-Queue Queue_init(len_t maxSize)
-{
-    Queue Q = (Queue) malloc(sizeof(Queue));
+Queue Queue_init(len_t maxSize) {
+    Queue Q = (Queue)malloc(sizeof(Queue));
     if (!Q)
         exit(EXIT_FAILURE);
-    Q->data = (ElemType*) malloc((maxSize + 1) * sizeof(ElemType));
+    Q->data = (ElemType *)malloc((maxSize + 1) * sizeof(ElemType));
     if (!Q->data)
         exit(EXIT_FAILURE);
     Q->front = -1;
@@ -15,18 +14,13 @@ Queue Queue_init(len_t maxSize)
     return Q;
 }
 
-bool Queue_isFull(Queue Q)
-{
+bool Queue_isFull(Queue Q) {
     return (Q->rear + 1) % (Q->maxSize) == Q->front ? true : false;
 }
 
-bool Queue_isEmpty(Queue Q)
-{
-    return Q->front == Q->rear ? true : false;
-}
+bool Queue_isEmpty(Queue Q) { return Q->front == Q->rear ? true : false; }
 
-bool Queue_add(Queue Q, ElemType E)
-{
+bool Queue_add(Queue Q, ElemType E) {
     if (Queue_isFull(Q))
         return false;
     else {
@@ -36,8 +30,7 @@ bool Queue_add(Queue Q, ElemType E)
     }
 }
 
-ElemType Queue_delete(Queue Q)
-{
+ElemType Queue_delete(Queue Q) {
     if (Queue_isEmpty(Q))
         return ERROR;
     else {

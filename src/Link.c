@@ -1,8 +1,7 @@
 #include "Link.h"
 
-Link Link_init()
-{
-    Link L = (Link) malloc(sizeof(struct Node));
+Link Link_init() {
+    Link L = (Link)malloc(sizeof(struct Node));
     if (!L)
         exit(EXIT_FAILURE);
     L->elem = HEAD_NODE;
@@ -10,21 +9,18 @@ Link Link_init()
     return L;
 }
 
-LoopLink LoopLink_init(ElemType E)
-{
+LoopLink LoopLink_init(ElemType E) {
     Link L = Link_init();
     Link_insertPos(L, E);
     L->next->next = L;
     return L;
 }
 
-Pos Link_locate(Link L, ind_t subs)
-{
+Pos Link_locate(Link L, ind_t subs) {
     if (!L)
         return NULL;
     Pos ptr = L;
-    for (int i = 0; i < subs; i++)
-    {
+    for (int i = 0; i < subs; i++) {
         if (!ptr->next)
             return NULL;
         else
@@ -33,11 +29,10 @@ Pos Link_locate(Link L, ind_t subs)
     return ptr;
 }
 
-bool Link_insertPos(Pos pre, ElemType E)
-{
+bool Link_insertPos(Pos pre, ElemType E) {
     if (!pre)
         return false;
-    Pos tmp = (Pos) malloc(sizeof(struct Node));
+    Pos tmp = (Pos)malloc(sizeof(struct Node));
     if (!tmp)
         exit(EXIT_FAILURE);
     tmp->elem = E;
@@ -46,16 +41,14 @@ bool Link_insertPos(Pos pre, ElemType E)
     return true;
 }
 
-bool Link_insertInd(Link L, ind_t subs, ElemType E)
-{
+bool Link_insertInd(Link L, ind_t subs, ElemType E) {
     if (!L || L->elem != HEAD_NODE)
         return false;
     Pos pre = Link_locate(L, subs);
     return Link_insertPos(pre, E);
 }
 
-bool Link_insertEnd(Link L, ElemType E)
-{
+bool Link_insertEnd(Link L, ElemType E) {
     if (!L || L->elem != HEAD_NODE)
         return false;
     Pos pre = L;
@@ -64,8 +57,7 @@ bool Link_insertEnd(Link L, ElemType E)
     return Link_insertPos(pre, E);
 }
 
-bool Link_deletePos(Pos pre)
-{
+bool Link_deletePos(Pos pre) {
     if (!pre || !pre->next)
         return false;
     Pos tmp = pre->next;
@@ -74,8 +66,7 @@ bool Link_deletePos(Pos pre)
     return true;
 }
 
-bool Link_deleteInd(Link L, ind_t subs)
-{
+bool Link_deleteInd(Link L, ind_t subs) {
     if (!L || L->elem != HEAD_NODE)
         return false;
     if (!subs)
@@ -84,8 +75,7 @@ bool Link_deleteInd(Link L, ind_t subs)
     return Link_deletePos(pre);
 }
 
-ElemType Link_search(Link L, ind_t subs)
-{
+ElemType Link_search(Link L, ind_t subs) {
     if (!L || L->elem != HEAD_NODE)
         return ERROR;
     Pos ptr = Link_locate(L, subs);
@@ -95,25 +85,23 @@ ElemType Link_search(Link L, ind_t subs)
         return ptr->elem;
 }
 
-len_t Link_len(Link L)
-{
+len_t Link_len(Link L) {
     if (!L || L->elem != HEAD_NODE)
         return ERROR;
     len_t count = 0;
     Pos ptr = L;
-    while (ptr->next)
-    {
+    while (ptr->next) {
         ptr = ptr->next;
         count++;
     }
     return count;
 }
 
-bool Link_remove(Link L)
-{
+bool Link_remove(Link L) {
     if (!L || L->elem != HEAD_NODE)
         return false;
-    while (Link_deletePos(L));
+    while (Link_deletePos(L))
+        ;
     free(L);
     return true;
 }

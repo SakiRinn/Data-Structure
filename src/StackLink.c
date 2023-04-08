@@ -1,8 +1,7 @@
 #include "StackLink.h"
 
-LStack LStack_init()
-{
-    LStack S = (LStack) malloc(sizeof(LStack));
+LStack LStack_init() {
+    LStack S = (LStack)malloc(sizeof(LStack));
     if (!S)
         exit(EXIT_FAILURE);
     S->data = Link_init();
@@ -10,27 +9,19 @@ LStack LStack_init()
     return S;
 }
 
-bool LStack_isEmpty(LStack S)
-{
-    if (S->data->elem == HEAD_NODE && !S->top)
-        return true;
-    else
-        return false;
+bool LStack_isEmpty(LStack S) {
+    return (S->data->elem == HEAD_NODE && !S->top) ? true : false;
 }
 
-bool LStack_push(LStack S, ElemType E)
-{
-    if (Link_insertPos(S->data, E))
-    {
+bool LStack_push(LStack S, ElemType E) {
+    if (Link_insertPos(S->data, E)) {
         S->top = Link_locate(S->data, 1);
         return true;
-    }
-    else
+    } else
         return false;
 }
 
-ElemType LStack_pop(LStack S)
-{
+ElemType LStack_pop(LStack S) {
     if (LStack_isEmpty(S))
         return ERROR;
     ElemType elem = S->top->elem;
@@ -41,18 +32,14 @@ ElemType LStack_pop(LStack S)
         return ERROR;
 }
 
-bool LStack_remove(LStack S)
-{
-    if (Link_remove(S->data))
-    {
+bool LStack_remove(LStack S) {
+    if (Link_remove(S->data)) {
         free(S);
         return true;
-    }
-    else
+    } else
         return false;
 }
 
-len_t LStack_len(LStack S)
-{
+len_t LStack_len(LStack S) {
     return Link_len(S->data);
 }
