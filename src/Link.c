@@ -1,8 +1,8 @@
 #include "Link.h"
 
-Link CreateLink()
+Link Link_init()
 {
-    Link L = (Link)malloc(sizeof(struct Node));
+    Link L = (Link) malloc(sizeof(struct Node));
     if (!L)
         exit(EXIT_FAILURE);
     L->elem = HEAD_NODE;
@@ -10,15 +10,15 @@ Link CreateLink()
     return L;
 }
 
-Loop CreateLoop(ETypeLink E)
+LoopLink LoopLink_init(ElemType E)
 {
-    Link L = CreateLink();
-    Insertpos(L, E);
+    Link L = Link_init();
+    Link_insertPos(L, E);
     L->next->next = L;
     return L;
 }
 
-Pos Locate(Link L, Cursor subs)
+Pos Link_locate(Link L, ind_t subs)
 {
     if (!L)
         return NULL;
@@ -33,11 +33,11 @@ Pos Locate(Link L, Cursor subs)
     return ptr;
 }
 
-bool Insertpos(Pos pre, ETypeLink E)
+bool Link_insertPos(Pos pre, ElemType E)
 {
     if (!pre)
         return false;
-    Pos tmp = (Pos)malloc(sizeof(struct Node));
+    Pos tmp = (Pos) malloc(sizeof(struct Node));
     if (!tmp)
         exit(EXIT_FAILURE);
     tmp->elem = E;
@@ -46,25 +46,25 @@ bool Insertpos(Pos pre, ETypeLink E)
     return true;
 }
 
-bool Insertcur(Link L, Cursor subs, ETypeLink E)
+bool Link_insertInd(Link L, ind_t subs, ElemType E)
 {
     if (!L || L->elem != HEAD_NODE)
         return false;
-    Pos pre = Locate(L, subs);
-    return Insertpos(pre, E);
+    Pos pre = Link_locate(L, subs);
+    return Link_insertPos(pre, E);
 }
 
-bool Insertend(Link L, ETypeLink E)
+bool Link_insertEnd(Link L, ElemType E)
 {
     if (!L || L->elem != HEAD_NODE)
         return false;
     Pos pre = L;
     while (pre->next)
         pre = pre->next;
-    return Insertpos(pre, E);
+    return Link_insertPos(pre, E);
 }
 
-bool Deletepos(Pos pre)
+bool Link_deletePos(Pos pre)
 {
     if (!pre || !pre->next)
         return false;
@@ -74,32 +74,32 @@ bool Deletepos(Pos pre)
     return true;
 }
 
-bool Deletecur(Link L, Cursor subs)
+bool Link_deleteInd(Link L, ind_t subs)
 {
     if (!L || L->elem != HEAD_NODE)
         return false;
     if (!subs)
         return false;
-    Pos pre = Locate(L, subs - 1);
-    return Deletepos(pre);
+    Pos pre = Link_locate(L, subs - 1);
+    return Link_deletePos(pre);
 }
 
-ETypeLink Search(Link L, Cursor subs)
+ElemType Link_search(Link L, ind_t subs)
 {
     if (!L || L->elem != HEAD_NODE)
         return ERROR;
-    Pos ptr = Locate(L, subs);
+    Pos ptr = Link_locate(L, subs);
     if (!ptr)
         return ERROR;
     else
         return ptr->elem;
 }
 
-Length LinkLen(Link L)
+len_t Link_len(Link L)
 {
     if (!L || L->elem != HEAD_NODE)
         return ERROR;
-    int count = 0;
+    len_t count = 0;
     Pos ptr = L;
     while (ptr->next)
     {
@@ -109,11 +109,11 @@ Length LinkLen(Link L)
     return count;
 }
 
-bool RemoveLink(Link L)
+bool Link_remove(Link L)
 {
-    if(!L || L->elem != HEAD_NODE)
+    if (!L || L->elem != HEAD_NODE)
         return false;
-    while (Deletepos(L));
+    while (Link_deletePos(L));
     free(L);
     return true;
 }

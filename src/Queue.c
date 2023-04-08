@@ -1,52 +1,47 @@
 #include "Queue.h"
+#include ".general.h"
 
-Queue CreateQueue(Length MaxSize)
+Queue Queue_init(len_t maxSize)
 {
-    Queue Q = (Queue) malloc(sizeof(struct ConQueue));
-    if(!Q)
+    Queue Q = (Queue) malloc(sizeof(Queue));
+    if (!Q)
         exit(EXIT_FAILURE);
-    Q->Data = (ETypeQueue*) malloc((MaxSize+1) * sizeof(ETypeQueue));
-    if(!Q->Data)
+    Q->data = (ElemType*) malloc((maxSize + 1) * sizeof(ElemType));
+    if (!Q->data)
         exit(EXIT_FAILURE);
-    Q->Front = -1;
-    Q->Rear = -1;
-    Q->MaxSize = MaxSize;
+    Q->front = -1;
+    Q->rear = -1;
+    Q->maxSize = maxSize;
     return Q;
 }
 
-bool isFullQ(Queue Q)
+bool Queue_isFull(Queue Q)
 {
-    if((Q->Rear + 1) % (Q->MaxSize) == Q->Front) 
-        return true;
-    else 
-        return false;
+    return (Q->rear + 1) % (Q->maxSize) == Q->front ? true : false;
 }
 
-bool isEmptyQ(Queue Q)
+bool Queue_isEmpty(Queue Q)
 {
-    if(Q->Front == Q->Rear)
-        return true;
-    else 
-        return false;
+    return Q->front == Q->rear ? true : false;
 }
 
-bool AddQ(Queue Q, ETypeQueue E)
+bool Queue_add(Queue Q, ElemType E)
 {
-    if(isFullQ(Q))
+    if (Queue_isFull(Q))
         return false;
     else {
-        Q->Rear = (Q->Rear + 1) % Q->MaxSize;
-        Q->Data[Q->Rear] = E;
+        Q->rear = (Q->rear + 1) % Q->maxSize;
+        Q->data[Q->rear] = E;
         return true;
     }
 }
 
-ETypeQueue DeleteQ(Queue Q)
+ElemType Queue_delete(Queue Q)
 {
-    if(isEmptyQ(Q)) 
+    if (Queue_isEmpty(Q))
         return ERROR;
     else {
-        Q->Front = (Q->Front + 1) % Q->MaxSize;
-        return Q->Data[Q->Front];
+        Q->front = (Q->front + 1) % Q->maxSize;
+        return Q->data[Q->front];
     }
 }

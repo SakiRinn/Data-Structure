@@ -1,50 +1,44 @@
 #include "Stack.h"
 
-Stack CreateStack(Length MaxSize)
+Stack Stack_init(len_t maxSize)
 {
-    Stack S = (Stack) malloc(sizeof(struct ConStack));
-    if(!S)
+    Stack S = (Stack) malloc(sizeof(Stack));
+    if (!S)
         exit(EXIT_FAILURE);
-    S->Data = (ETypeStack*) malloc(MaxSize * sizeof(ETypeStack));
-    if(!S->Data)
+    S->data = (ElemType*) malloc(maxSize * sizeof(ElemType));
+    if (!S->data)
         exit(EXIT_FAILURE);
-    S->Top = -1; 
-    S->MaxSize = MaxSize;
+    S->top = -1;
+    S->maxSize = maxSize;
     return S;
 }
 
-bool isFullS(Stack S)
+bool Stack_isFull(Stack S)
 {
-    if(S->Top == S->MaxSize - 1)
+    return S->top == S->maxSize - 1 ? true : false;
+}
+
+bool Stack_isEmpty(Stack S)
+{
+    return S->top == -1 ? true : false;
+}
+
+bool Stack_push(Stack S, ElemType E)
+{
+    if (!Stack_isFull(S)) {
+        S->top++;
+        S->data[S->top] = E;
         return true;
-    else 
+    } else
         return false;
 }
 
-bool isEmptyS(Stack S)
+ElemType Stack_pop(Stack S)
 {
-    if(S->Top == -1)
-        return true;
-    else 
-        return false;
-}
-
-bool Push(Stack S, ETypeStack E)
-{
-    if(!isFullS(S)) {
-        S->Top++;
-        S->Data[S->Top] = E;
-        return true;
-    } else 
-        return false;
-}
-
-ETypeStack Pop(Stack S)
-{
-    if(!isEmptyS(S)) {
-        int elem = S->Data[S->Top];
-        S->Top--;
+    if (!Stack_isEmpty(S)) {
+        ElemType elem = S->data[S->top];
+        S->top--;
         return elem;
-    } else 
+    } else
         return ERROR;
 }

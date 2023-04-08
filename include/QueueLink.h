@@ -5,27 +5,26 @@
 链队列的前指针Front就是链表头结点的指针。 */
 #include ".general.h"
 #include "Link.h"
-typedef long ETypeLQueue;
 
 /*Structure Declaration*/
-typedef struct ConLQueue *LQueue;
-struct ConLQueue {
-    Link Data;
-    Pos Rear;
+typedef struct _LQueue *LQueue;
+struct _LQueue {
+    Link data;
+    Pos rear;
 };
 
 /*Function Declaration*/
 //创建一个队列(链)
-LQueue CreateLQueue();
+LQueue LQueue_init();
 //队列(链)是否为空
-bool isEmptyLQ(LQueue Q);
+bool LQueue_isEmpty(LQueue Q);
 //添加(链)
-bool AddLQ(LQueue Q, ETypeLQueue E);
+bool LQueue_add(LQueue Q, ElemType E);
 //删除(链)
-ETypeLQueue DeleteLQ(LQueue Q);
+ElemType LQueue_delete(LQueue Q);
 //销毁链队列
-bool RemoveLQueue(LQueue Q);
+bool LQueue_remove(LQueue Q);
 //返回链队列长度
-Length LQueueLen(LQueue Q);
+len_t LQueue_len(LQueue Q);
 
 #endif

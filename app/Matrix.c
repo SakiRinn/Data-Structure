@@ -1,30 +1,30 @@
 #include "Matrix.h"
 
-GPos GLocateRight(GLink start, Cursor subs)
+GPos GLocateRight(GLink start, ind_t subs)
 {
     GPos ptr = start;
     for(int i = 0; i < subs; i++) {
         if(!ptr->right)
             return NULL;
-        else 
+        else
             ptr = ptr->right;
     }
     return ptr;
 }
 
-GPos GLocateDown(GLink start, Cursor subs)
+GPos GLocateDown(GLink start, ind_t subs)
 {
     GPos ptr = start;
     for(int i = 0; i < subs; i++) {
         if(!ptr->down)
             return NULL;
-        else 
+        else
             ptr = ptr->down;
     }
     return ptr;
 }
 
-Matrix CreateMatrix(Cursor MaxRow, Cursor MaxCol)
+Matrix CreateMatrix(ind_t MaxRow, ind_t MaxCol)
 {
     if(!MaxRow || !MaxCol)
         return NULL;
@@ -65,7 +65,7 @@ Matrix CreateMatrix(Cursor MaxRow, Cursor MaxCol)
     return M;
 }
 
-bool InsertUnit(Matrix M, ElemType E, Cursor Row, Cursor Column)
+bool InsertUnit(Matrix M, ElemType E, ind_t Row, ind_t Column)
 {
     if(M->tag != START || Row > M->region.unit.row || Column > M->region.unit.column)
         return false;
@@ -141,7 +141,7 @@ bool PrintMatrix(Matrix M)
         GPos ptrC = ptrR->region.head;
         if(!ptrC) {
             //空行填0
-            for(int j = 0; j < M->region.unit.column; j++) 
+            for(int j = 0; j < M->region.unit.column; j++)
                 printf("%-2d ", 0);
             putchar('\n');
         } else {
@@ -152,7 +152,7 @@ bool PrintMatrix(Matrix M)
             while(ptrC->right) {
                 printf("%-2ld ", ptrC->region.unit.value);
                 int diff = ptrC->right->region.unit.column - ptrC->region.unit.column;
-                for(int k = 1; k < diff; k++) 
+                for(int k = 1; k < diff; k++)
                     printf("%-2d ", 0);
                 ptrC = GLocateRight(ptrC, 1);
             }

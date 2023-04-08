@@ -3,26 +3,25 @@
 #define _STACK_H_
 
 #include ".general.h"
-typedef long ETypeStack;
 
 /*Structure Declaration*/
-typedef struct ConStack *Stack;
-struct ConStack {
-    ETypeStack *Data; 
-    Cursor Top; 
-    Length MaxSize; 
+typedef struct _Stack *Stack;
+struct _Stack {
+    ElemType *data;
+    ind_t top;
+    len_t maxSize;
 };
 
 /*Function Declaration*/
 //创建一个栈
-Stack CreateStack(Length MaxSize);
+Stack Stack_init(len_t maxSize);
 //栈是否为满
-bool isFullS(Stack S);
+bool Stack_isFull(Stack S);
 //栈是否为空
-bool isEmptyS(Stack S);
+bool Stack_isEmpty(Stack S);
 //进栈
-bool Push(Stack S, ETypeStack E);
+bool Stack_push(Stack S, ElemType E);
 //出栈：成功，返回出栈元素；失败，返回ERROR
-ETypeStack Pop(Stack S);
+ElemType Stack_pop(Stack S);
 
 #endif

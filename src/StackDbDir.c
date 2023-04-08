@@ -1,47 +1,48 @@
 #include "StackDbDir.h"
+#include ".general.h"
 
-DStack CreateDStack(Length MaxSize)
+DStack DStack_init(len_t maxSize)
 {
     DStack S = (DStack) malloc(sizeof(struct ConDStack));
-    S->Data = (ElemType*) malloc(MaxSize * sizeof(ElemType));
-    S->Top1 = -1;
-    S->Top2 = MaxSize;
-    S->MaxSize = MaxSize;
+    S->data = (ElemType*) malloc(maxSize * sizeof(ElemType));
+    S->top1 = -1;
+    S->top2 = maxSize;
+    S->maxSize = maxSize;
     return S;
 }
 
-bool DPush(DStack S, ElemType E, int tag)
+bool DStack_push(DStack S, ElemType E, int tag)
 {
     //双向栈满
-    if(S->Top1 == S->Top2)
+    if(S->top1 == S->top2)
         return false;
     //Push其中一个栈
-    if(tag == 1) {
-        S->Top1++;
-        S->Data[S->Top1] = E;
+    if (tag == 1) {
+        S->top1++;
+        S->data[S->top1] = E;
         return true;
-    } else if(tag == 2) {
-        S->Top2--;
-        S->Data[S->Top2] = E;
+    } else if (tag == 2) {
+        S->top2--;
+        S->data[S->top2] = E;
         return true;
-    } else 
+    } else
         return false;
 }
 
-ElemType DPop(DStack S, int tag)
+ElemType DStack_pop(DStack S, int tag)
 {
     //双向栈空
-    if(S->Top1 == -1 || S->Top2 == S->MaxSize)
+    if(S->top1 == -1 || S->top2 == S->maxSize)
         return ERROR;
     //Pop其中一个栈
     if(tag == 1) {
-        int re = S->Data[S->Top1];
-        S->Top1--;
+        ElemType re = S->data[S->top1];
+        S->top1--;
         return re;
     } else if(tag == 2) {
-        int re = S->Data[S->Top2];
-        S->Top2++;
+        ElemType re = S->data[S->top2];
+        S->top2++;
         return re;
-    } else 
+    } else
         return ERROR;
 }

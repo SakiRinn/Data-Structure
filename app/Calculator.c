@@ -2,49 +2,49 @@
 
 Link RevPolish(char expr[])
 {
-    Link res = CreateLink();
-    LStack opestack = CreateLStack();
+    Link res = Link_init();
+    LStack opestack = LStack_init();
     char *ptr = expr;
     while(ptr) {
         /*judgement*/
         switch(*ptr) {
-            case '*': case '/': 
-                while(opestack->Top && (opestack->Top->elem == '*' || opestack->Top->elem == '/')) 
-                    Insertend(res, LPop(opestack) + OPTOR);
-                LPush(opestack, *ptr);
+            case '*': case '/':
+                while(opestack->top && (opestack->top->elem == '*' || opestack->top->elem == '/'))
+                    Link_insertEnd(res, LStack_pop(opestack) + OPTOR);
+                LStack_push(opestack, *ptr);
                 break;
             case '+': case '-':
-                while(opestack->Top && (opestack->Top->elem == '*' || opestack->Top->elem == '/' 
-                || opestack->Top->elem == '+' || opestack->Top->elem == '-')) 
-                    Insertend(res, LPop(opestack) + OPTOR);
-                LPush(opestack, *ptr);
+                while(opestack->top && (opestack->top->elem == '*' || opestack->top->elem == '/'
+                || opestack->top->elem == '+' || opestack->top->elem == '-'))
+                    Link_insertEnd(res, LStack_pop(opestack) + OPTOR);
+                LStack_push(opestack, *ptr);
                 break;
-            case '(': 
-                LPush(opestack, *ptr);
+            case '(':
+                LStack_push(opestack, *ptr);
                 break;
-            case ')': 
-                while(opestack->Top->elem != '(')
-                    Insertend(res, LPop(opestack) + OPTOR);
-                LPop(opestack);
+            case ')':
+                while(opestack->top->elem != '(')
+                    Link_insertEnd(res, LStack_pop(opestack) + OPTOR);
+                LStack_pop(opestack);
                 break;
             default:
                 if(*ptr >= '0' && *ptr <= '9') {
                     char tmpnum[NUMAXLEN] = {0};
                     for(int i = 0; i < NUMAXLEN; i++) {
                         tmpnum[i] = *ptr;
-                        if(ptr[1] >= '0' && ptr[1] <= '9') 
+                        if(ptr[1] >= '0' && ptr[1] <= '9')
                             ptr++;
                         else break;
                     }
-                    Insertend(res, atoi(tmpnum));
+                    Link_insertEnd(res, atoi(tmpnum));
                 }
         }
         /*next*/
         if(ptr[1] == '\0') {
-            while(!isEmptyLS(opestack)) {
-                ElemType num = LPop(opestack) + OPTOR;
+            while(!LStack_isEmpty(opestack)) {
+                ElemType num = LStack_pop(opestack) + OPTOR;
                 if(num != ERROR)
-                    Insertend(res, num);
+                    Link_insertEnd(res, num);
             }
             break;
         }
@@ -57,33 +57,33 @@ ElemType CalcRev(Link revp)
 {
     if(revp->elem != HEAD_NODE || !revp->next)
         return ERROR;
-    LStack calcstack = CreateLStack();
+    LStack calcstack = LStack_init();
     Pos ptr = revp->next;
     while(ptr) {
         if(ptr->elem >= '*' + OPTOR && ptr->elem <= '/' + OPTOR) {
             if(LStackLen(calcstack) < 2)
                 return ERROR;
             int ope = ptr->elem - OPTOR;
-            ElemType temp = LPop(calcstack);
+            ElemType temp = LStack_pop(calcstack);
             switch(ope) {
                 case '+':
-                    LPush(calcstack, LPop(calcstack) + temp);
+                    LStack_push(calcstack, LStack_pop(calcstack) + temp);
                     break;
                 case '-':
-                    LPush(calcstack, LPop(calcstack) - temp);
+                    LStack_push(calcstack, LStack_pop(calcstack) - temp);
                     break;
                 case '*':
-                    LPush(calcstack, LPop(calcstack) * temp);
+                    LStack_push(calcstack, LStack_pop(calcstack) * temp);
                     break;
                 case '/':
-                    LPush(calcstack, LPop(calcstack) / temp);
+                    LStack_push(calcstack, LStack_pop(calcstack) / temp);
                     break;
                 default:
                     return ERROR;
             }
-        } else 
-            LPush(calcstack, ptr->elem);
+        } else
+            LStack_push(calcstack, ptr->elem);
         ptr = ptr->next;
     }
-    return LPop(calcstack);
+    return LStack_pop(calcstack);
 }

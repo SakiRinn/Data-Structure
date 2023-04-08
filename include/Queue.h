@@ -3,27 +3,26 @@
 #define _QUEUE_H_
 
 #include ".general.h"
-typedef long ETypeQueue;
 
 /*Structure Declaration*/
-typedef struct ConQueue *Queue;
-struct ConQueue {
-    ETypeQueue *Data;
-    Cursor Front;
-    Cursor Rear;
-    Length MaxSize;
+typedef struct _Queue *Queue;
+struct _Queue {
+    ElemType *data;
+    ind_t front;
+    ind_t rear;
+    len_t maxSize;
 };
 
 /*Function Declaration*/
 //创建一个队列
-Queue CreateQueue(Length MaxSize);
+Queue Queue_init(len_t maxSize);
 //队列是否为满
-bool isFullQ(Queue Q);
+bool Queue_isFull(Queue Q);
 //队列是否为空
-bool isEmptyQ(Queue Q);
+bool Queue_isEmpty(Queue Q);
 //添加
-bool AddQ(Queue Q, ETypeQueue E);
+bool Queue_add(Queue Q, ElemType E);
 //删除：成功，返回被删除元素值；失败，返回ERROR
-ETypeQueue DeleteQ(Queue Q);
+ElemType Queue_delete(Queue Q);
 
 #endif

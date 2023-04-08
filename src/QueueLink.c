@@ -1,48 +1,45 @@
 #include "QueueLink.h"
 
-LQueue CreateLQueue()
+LQueue LQueue_init()
 {
-    LQueue Q = (LQueue) malloc(sizeof(struct ConLQueue));
+    LQueue Q = (LQueue) malloc(sizeof(struct _LQueue));
     if (!Q)
         exit(EXIT_FAILURE);
-    Q->Data = CreateLink();
-    Q->Rear = Q->Data;
+    Q->data = Link_init();
+    Q->rear = Q->data;
     return Q;
 }
 
-bool isEmptyLQ(LQueue Q)
+bool LQueue_isEmpty(LQueue Q)
 {
-    if (!Q->Data->next)
+    return !(Q->data->next) ? true : false;
+}
+
+bool LQueue_add(LQueue Q, ElemType E)
+{
+    if (Link_insertEnd(Q->data, E))
+    {
+        Q->rear = Link_locate(Q->rear, 1);
         return true;
+    }
     else
         return false;
 }
 
-bool AddLQ(LQueue Q, ETypeLQueue E)
+ElemType LQueue_delete(LQueue Q)
 {
-    if (Insertend(Q->Data, E))
-    {
-        Q->Rear = Locate(Q->Rear, 1);
-        return true;
-    }
-    else 
-        return false;
-}
-
-ETypeLQueue DeleteLQ(LQueue Q)
-{
-    if (isEmptyLQ(Q))
+    if (LQueue_isEmpty(Q))
         return ERROR;
-    ETypeLQueue elem = Q->Data->next->elem;
-    if (Deletepos(Q->Data))
+    ElemType elem = Q->data->next->elem;
+    if (Link_deletePos(Q->data))
         return elem;
     else
         return ERROR;
 }
 
-bool RemoveLQueue(LQueue Q)
+bool LQueue_remove(LQueue Q)
 {
-    if (RemoveLink(Q->Data))
+    if (Link_remove(Q->data))
     {
         free(Q);
         return true;
@@ -51,7 +48,7 @@ bool RemoveLQueue(LQueue Q)
         return false;
 }
 
-Length LQueueLen(LQueue Q)
+len_t LQueue_len(LQueue Q)
 {
-    return LinkLen(Q->Data);
+    return Link_len(Q->data);
 }

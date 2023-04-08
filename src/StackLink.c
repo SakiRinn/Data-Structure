@@ -1,49 +1,49 @@
 #include "StackLink.h"
 
-LStack CreateLStack()
+LStack LStack_init()
 {
-    LStack S = (LStack)malloc(sizeof(struct ConLStack));
+    LStack S = (LStack) malloc(sizeof(LStack));
     if (!S)
         exit(EXIT_FAILURE);
-    S->Data = CreateLink();
-    S->Top = NULL;
+    S->data = Link_init();
+    S->top = NULL;
     return S;
 }
 
-bool isEmptyLS(LStack S)
+bool LStack_isEmpty(LStack S)
 {
-    if (S->Data->elem == HEAD_NODE && !S->Top)
+    if (S->data->elem == HEAD_NODE && !S->top)
         return true;
     else
         return false;
 }
 
-bool LPush(LStack S, ETypeLStack E)
+bool LStack_push(LStack S, ElemType E)
 {
-    if (Insertpos(S->Data, E))
+    if (Link_insertPos(S->data, E))
     {
-        S->Top = Locate(S->Data, 1);
+        S->top = Link_locate(S->data, 1);
         return true;
     }
     else
         return false;
 }
 
-ETypeLStack LPop(LStack S)
+ElemType LStack_pop(LStack S)
 {
-    if (isEmptyLS(S))
+    if (LStack_isEmpty(S))
         return ERROR;
-    ETypeLStack elem = S->Top->elem;
-    S->Top = Locate(S->Top, 1);
-    if (Deletepos(S->Data))
+    ElemType elem = S->top->elem;
+    S->top = Link_locate(S->top, 1);
+    if (Link_deletePos(S->data))
         return elem;
     else
         return ERROR;
 }
 
-bool RemoveLStack(LStack S)
+bool LStack_remove(LStack S)
 {
-    if (RemoveLink(S->Data))
+    if (Link_remove(S->data))
     {
         free(S);
         return true;
@@ -52,7 +52,7 @@ bool RemoveLStack(LStack S)
         return false;
 }
 
-Length LStackLen(LStack S)
+len_t LStack_len(LStack S)
 {
-    return LinkLen(S->Data);
+    return Link_len(S->data);
 }

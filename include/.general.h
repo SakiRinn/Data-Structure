@@ -8,9 +8,9 @@
 //错误返回值
 #define ERROR 0x1FFF
 //下标
-typedef unsigned short Cursor;
+typedef long ind_t;
 //长度
-typedef unsigned short Length;
+typedef long len_t;
 //数据类型(EType)
 typedef long ElemType;
 

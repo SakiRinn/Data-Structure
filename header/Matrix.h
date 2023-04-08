@@ -13,8 +13,8 @@ struct GNode {
     union {
         GLink head;
         struct {
-            Cursor row;
-            Cursor column;
+            ind_t row;
+            ind_t column;
             ElemType value;
         } unit;
     } region;
@@ -25,13 +25,13 @@ typedef GLink Matrix;
 
 /*Function Declaration*/
 //向右遍历(十字链表)
-GPos GLocateRight(GLink start, Cursor subs);
+GPos GLocateRight(GLink start, ind_t subs);
 //向下遍历(十字链表)
-GPos GLocateDown(GLink start, Cursor subs);
+GPos GLocateDown(GLink start, ind_t subs);
 //创建矩阵
-Matrix CreateMatrix(Cursor MaxRow, Cursor MaxCol);
+Matrix CreateMatrix(ind_t MaxRow, ind_t MaxCol);
 //插入矩阵中的元素
-bool InsertUnit(Matrix M, ElemType E, Cursor Row, Cursor Column);
+bool InsertUnit(Matrix M, ElemType E, ind_t Row, ind_t Column);
 //打印矩阵
 bool PrintMatrix(Matrix M);
 

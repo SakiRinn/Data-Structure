@@ -9,18 +9,18 @@
 /*Structure Declaration*/
 typedef struct ConDStack *DStack;
 struct ConDStack {
-    ElemType *Data; 
-    Cursor Top1; 
-    Cursor Top2; 
-    Length MaxSize; 
+    ElemType *data;
+    ind_t top1;
+    ind_t top2;
+    len_t maxSize;
 };
 
 /*Function Declaration*/
 //创建一个双向栈
-DStack CreateDStack(Length MaxSize);
+DStack DStack_init(len_t maxSize);
 //进栈
-bool DPush(DStack S, ElemType E, int tag);
+bool DStack_push(DStack S, ElemType E, int tag);
 //出栈
-ElemType DPop(DStack S, int tag);
+ElemType DStack_pop(DStack S, int tag);
 
 #endif
