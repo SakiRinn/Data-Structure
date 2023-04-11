@@ -29,17 +29,17 @@ struct _Stack {
 // Method Declaration
 //-------------------------------------
 
-// 创建一个栈
+// 初始化
 Stack Stack_init(len_t maxSize);
-// 栈是否为满
+// 是否为满
 bool Stack_isFull(Stack self);
-// 栈是否为空
+// 是否为空
 bool Stack_isEmpty(Stack self);
 // 进栈
 bool Stack_push(Stack self, ElemType E);
-// 出栈：成功，返回出栈元素；失败，返回ERROR
+// 出栈: 成功, 返回出栈元素; 失败, 返回ERROR
 ElemType Stack_pop(Stack self);
-// 删除
+// 销毁
 void Stack_delete(Stack self);
 
 

@@ -21,12 +21,12 @@ Link Link_init() {
     return self;
 }
 
-LPos Link_locate(Link self, ind_t subs) {
+LPos Link_locate(Link self, ind_t index) {
     LPos L = self.head;
     if (!L)
         return NULL;
     LPos ptr = L;
-    for (int i = 0; i < subs; i++) {
+    for (int i = 0; i < index; i++) {
         if (!ptr->next)
             return NULL;
         else
@@ -47,11 +47,11 @@ bool Link_insertPos(LPos pre, ElemType E) {
     return true;
 }
 
-bool Link_insertInd(Link self, ind_t subs, ElemType E) {
+bool Link_insertInd(Link self, ind_t index, ElemType E) {
     LPos L = self.head;
     if (!L || L->elem != HEAD_NODE)
         return false;
-    LPos pre = self.locate(self, subs);
+    LPos pre = self.locate(self, index);
     return self.insertPos(pre, E);
 }
 
@@ -74,21 +74,21 @@ bool Link_removePos(LPos pre) {
     return true;
 }
 
-bool Link_removeInd(Link self, ind_t subs) {
+bool Link_removeInd(Link self, ind_t index) {
     LPos L = self.head;
     if (!L || L->elem != HEAD_NODE)
         return false;
-    if (!subs)
+    if (!index)
         return false;
-    LPos pre = self.locate(self, subs - 1);
+    LPos pre = self.locate(self, index - 1);
     return self.removePos(pre);
 }
 
-ElemType Link_get(Link self, ind_t subs) {
+ElemType Link_get(Link self, ind_t index) {
     LPos L = self.head;
     if (!L || L->elem != HEAD_NODE)
         return ERROR;
-    LPos ptr = self.locate(self, subs);
+    LPos ptr = self.locate(self, index);
     if (!ptr)
         return ERROR;
     else

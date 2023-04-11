@@ -19,12 +19,12 @@
         bool (*delete)(Link_##elem_t);                                         \
     };                                                                         \
                                                                                \
-    LPos_##elem_t Link_##elem_t##_locate(Link_##elem_t self, ind_t subs) {     \
+    LPos_##elem_t Link_##elem_t##_locate(Link_##elem_t self, ind_t index) {    \
         LPos_##elem_t L = self.head;                                           \
         if (!L)                                                                \
             return NULL;                                                       \
         LPos_##elem_t ptr = L;                                                 \
-        for (int i = 0; i < subs; i++) {                                       \
+        for (int i = 0; i < index; i++) {                                      \
             if (!ptr->next)                                                    \
                 return NULL;                                                   \
             else                                                               \
@@ -46,11 +46,12 @@
         return true;                                                           \
     }                                                                          \
                                                                                \
-    bool Link_##elem_t##_insertInd(Link_##elem_t self, ind_t subs, elem_t E) { \
+    bool Link_##elem_t##_insertInd(Link_##elem_t self, ind_t index,            \
+                                   elem_t E) {                                 \
         LPos_##elem_t L = self.head;                                           \
         if (!L || L->elem != (elem_t)HEAD_NODE)                                \
             return false;                                                      \
-        LPos_##elem_t pre = self.locate(self, subs);                           \
+        LPos_##elem_t pre = self.locate(self, index);                          \
         return self.insertPos(pre, E);                                         \
     }                                                                          \
                                                                                \
@@ -73,21 +74,21 @@
         return true;                                                           \
     }                                                                          \
                                                                                \
-    bool Link_##elem_t##_removeInd(Link_##elem_t self, ind_t subs) {           \
+    bool Link_##elem_t##_removeInd(Link_##elem_t self, ind_t index) {          \
         LPos_##elem_t L = self.head;                                           \
         if (!L || L->elem != (elem_t)HEAD_NODE)                                \
             return false;                                                      \
-        if (!subs)                                                             \
+        if (!index)                                                            \
             return false;                                                      \
-        LPos_##elem_t pre = self.locate(self, subs - 1);                       \
+        LPos_##elem_t pre = self.locate(self, index - 1);                      \
         return self.removePos(pre);                                            \
     }                                                                          \
                                                                                \
-    elem_t Link_##elem_t##_get(Link_##elem_t self, ind_t subs) {               \
+    elem_t Link_##elem_t##_get(Link_##elem_t self, ind_t index) {              \
         LPos_##elem_t L = self.head;                                           \
         if (!L || L->elem != (elem_t)HEAD_NODE)                                \
             return (elem_t)ERROR;                                              \
-        LPos_##elem_t ptr = self.locate(self, subs);                           \
+        LPos_##elem_t ptr = self.locate(self, index);                          \
         if (!ptr)                                                              \
             return (elem_t)ERROR;                                              \
         else                                                                   \

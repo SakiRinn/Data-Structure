@@ -33,13 +33,13 @@ struct _DStack {
 // Method Declaration
 //-------------------------------------
 
-// 创建一个双向栈
+// 初始化
 DStack DStack_init(len_t maxSize);
 // 进栈
 bool DStack_push(DStack self, ElemType E, StackTag tag);
 // 出栈
 ElemType DStack_pop(DStack self, StackTag tag);
-// 删除
+// 销毁
 void DStack_delete(DStack self);
 
 

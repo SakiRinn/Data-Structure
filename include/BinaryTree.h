@@ -2,15 +2,17 @@
 #ifndef _BINARY_TREE_H_
 #define _BINARY_TREE_H_
 
-
 #include ".general.h"
 #include "StackLink.h"
 #include "QueueLink.h"
-#define EMPTY 0xDDF
 
 //-------------------------------------
 // Structure Declaration
 //-------------------------------------
+
+// 初始化时，数组中的EMPTY表示结点不存在 (空结点)
+#define EMPTY 0xDDFDDF
+
 typedef struct BiTreeNode *BiTree;
 struct BiTreeNode {
     ElemType elem;

@@ -30,17 +30,17 @@ struct _Queue {
 // Method Declaration
 //-------------------------------------
 
-// 创建一个队列
+// 初始化
 Queue Queue_init(len_t maxSize);
-// 队列是否为满
+// 是否为满
 bool Queue_isFull(Queue self);
-// 队列是否为空
+// 是否为空
 bool Queue_isEmpty(Queue self);
 // 添加
 bool Queue_add(Queue self, ElemType E);
-// 删除：成功，返回被删除元素值；失败，返回ERROR
+// 删除: 成功, 返回被删除元素值; 失败, 返回ERROR
 ElemType Queue_remove(Queue self);
-// 销毁链队列
+// 销毁
 void Queue_delete(Queue self);
 
 

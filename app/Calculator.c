@@ -1,93 +1,105 @@
 #include "Calculator.h"
 #include "StackLink.h"
 
-Link RevPolish(char expr[]) {
-    Link res = Link_init();
-    LStack opestack = LStack_init();
+RPN expr2RPN(char expr[]) {
+    // 初始化操作符栈和RPN容器
+    LStack_int opt_S = LStack_int_init();
+    RPN rpn = Link_int_init();
+
     char *ptr = expr;
     while (ptr) {
-        /*judgement*/
+
+        // 处理当前元素
         switch (*ptr) {
         case '*':
         case '/':
-            while (opestack->top &&
-                   (opestack->top->elem == '*' || opestack->top->elem == '/'))
-                Link_insertEnd(res, LStack_pop(opestack) + OPTOR);
-            LStack_push(opestack, *ptr);
+            while (opt_S.top &&
+                   (opt_S.top->elem == '*' || opt_S.top->elem == '/'))
+                rpn.insertEnd(rpn, opt_S.pop(opt_S) + OPERATOR);
+            opt_S.push(opt_S, *ptr);
             break;
         case '+':
         case '-':
-            while (opestack->top &&
-                   (opestack->top->elem == '*' || opestack->top->elem == '/' ||
-                    opestack->top->elem == '+' || opestack->top->elem == '-'))
-                Link_insertEnd(res, LStack_pop(opestack) + OPTOR);
-            LStack_push(opestack, *ptr);
+            while (opt_S.top &&
+                   (opt_S.top->elem == '*' || opt_S.top->elem == '/' ||
+                    opt_S.top->elem == '+' || opt_S.top->elem == '-'))
+                rpn.insertEnd(rpn, opt_S.pop(opt_S) + OPERATOR);
+            opt_S.push(opt_S, *ptr);
             break;
         case '(':
-            LStack_push(opestack, *ptr);
+            opt_S.push(opt_S, *ptr);
             break;
         case ')':
-            while (opestack->top->elem != '(')
-                Link_insertEnd(res, LStack_pop(opestack) + OPTOR);
-            LStack_pop(opestack);
+            while (opt_S.top->elem != '(')
+                rpn.insertEnd(rpn, opt_S.pop(opt_S) + OPERATOR);
+            opt_S.pop(opt_S);
             break;
         default:
-            if (*ptr >= '0' && *ptr <= '9') {
-                char tmpnum[NUMAXLEN] = {0};
+            if ((*ptr >= '0' && *ptr <= '9')) {
+                char temp_num[NUMAXLEN] = {0};
+                int i = 0;
                 for (int i = 0; i < NUMAXLEN; i++) {
-                    tmpnum[i] = *ptr;
+                    temp_num[i] = *ptr;
                     if (ptr[1] >= '0' && ptr[1] <= '9')
                         ptr++;
                     else
                         break;
                 }
-                Link_insertEnd(res, atoi(tmpnum));
+                rpn.insertEnd(rpn, atoi(temp_num));
             }
         }
-        /*next*/
+
+        // next
         if (ptr[1] == '\0') {
-            while (!LStack_isEmpty(opestack)) {
-                ElemType num = LStack_pop(opestack) + OPTOR;
+            while (!opt_S.isEmpty(opt_S)) {
+                int num = opt_S.pop(opt_S) + OPERATOR;
                 if (num != ERROR)
-                    Link_insertEnd(res, num);
+                    rpn.insertEnd(rpn, num);
             }
             break;
         } else
             ptr++;
     }
-    return res;
+
+    opt_S.delete(opt_S);
+    return rpn;
 }
 
-ElemType CalcRev(Link revp) {
-    if (revp->elem != HEAD_NODE || !revp->next)
+double calcRPN(RPN rpn) {
+    LStack_double calc_S = LStack_double_init();
+    LPos_int data = rpn.head;
+    if (data->elem != HEAD_NODE || !data->next)
         return ERROR;
-    LStack calcstack = LStack_init();
-    LPos ptr = revp->next;
-    while (ptr) {
-        if (ptr->elem >= '*' + OPTOR && ptr->elem <= '/' + OPTOR) {
-            if (LStack_length(calcstack) < 2)
+
+    for (LPos_int ptr = data->next; ptr; ptr = ptr->next) {
+        if (ptr->elem >= '*' + OPERATOR && ptr->elem <= '/' + OPERATOR) {
+            if (rpn.length(rpn) < 2)
                 return ERROR;
-            int ope = ptr->elem - OPTOR;
-            ElemType temp = LStack_pop(calcstack);
-            switch (ope) {
+            int opt = ptr->elem - OPERATOR;
+            double temp = calc_S.pop(calc_S);
+
+            switch (opt) {
             case '+':
-                LStack_push(calcstack, LStack_pop(calcstack) + temp);
+                calc_S.push(calc_S, calc_S.pop(calc_S) + temp);
                 break;
             case '-':
-                LStack_push(calcstack, LStack_pop(calcstack) - temp);
+                calc_S.push(calc_S, calc_S.pop(calc_S) - temp);
                 break;
             case '*':
-                LStack_push(calcstack, LStack_pop(calcstack) * temp);
+                calc_S.push(calc_S, calc_S.pop(calc_S) * temp);
                 break;
             case '/':
-                LStack_push(calcstack, LStack_pop(calcstack) / temp);
+                calc_S.push(calc_S, calc_S.pop(calc_S) / temp);
                 break;
             default:
                 return ERROR;
             }
+
         } else
-            LStack_push(calcstack, ptr->elem);
-        ptr = ptr->next;
+            calc_S.push(calc_S, ptr->elem);
     }
-    return LStack_pop(calcstack);
+
+    double result = calc_S.pop(calc_S);
+    calc_S.delete(calc_S);
+    return result;
 }

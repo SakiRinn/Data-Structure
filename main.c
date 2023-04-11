@@ -4,12 +4,13 @@
 #include "Stack.h"
 
 GENERIC_LINK(double)
-GENERIC_QUEUE_LINK(double)
-GENERIC_QUEUE(double)
-GENERIC_STACK(double)
+GENERIC_STACK_LINK(double)
 
 
 int main()
 {
+    Link L = Link_init();
+    /* code... */
+    L.delete(L);
     return 0;
 }

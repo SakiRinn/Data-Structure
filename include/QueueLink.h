@@ -30,17 +30,17 @@ struct _LQueue {
 // Method Declaration
 //-------------------------------------
 
-// 创建一个队列(链)
+// 初始化
 LQueue LQueue_init();
-// 队列(链)是否为空
+// 是否为空
 bool LQueue_isEmpty(LQueue self);
-// 添加(链)
+// 添加
 bool LQueue_add(LQueue self, ElemType E);
-// 删除(链)
+// 删除: 成功, 返回被删除元素值; 失败, 返回ERROR
 ElemType LQueue_remove(LQueue self);
-// 销毁链队列
+// 销毁
 bool LQueue_delete(LQueue self);
-// 返回链队列长度
+// 返回长度
 len_t LQueue_length(LQueue self);
 
 

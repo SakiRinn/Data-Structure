@@ -1,4 +1,8 @@
-/*基于十字链表的矩阵*/
+/**
+ * @file Matrix.h
+ * @brief 基于十字链表的矩阵
+ *
+ */
 #ifndef _MATRIX_H_
     #define _MATRIX_H_
 

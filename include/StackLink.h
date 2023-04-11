@@ -31,17 +31,17 @@ struct _LStack {
 // Method Declaration
 //-------------------------------------
 
-// 创建一个栈(链)
+// 初始化
 LStack LStack_init();
-// 栈(链)是否为空
+// 是否为空
 bool LStack_isEmpty(LStack self);
-// 进栈(链)
+// 进栈
 bool LStack_push(LStack self, ElemType E);
-// 出栈(链)
+// 出栈
 ElemType LStack_pop(LStack self);
-// 销毁链栈
+// 销毁
 bool LStack_delete(LStack self);
-// 返回链栈长度
+// 返回长度
 len_t LStack_length(LStack self);
 
 
