@@ -5,11 +5,11 @@
 #include ".general.h"
 
 /*Structure Declaration*/
-enum Type {HEAD, UNIT, START};
+enum GNodeTag {HEAD, UNIT, START};
 typedef struct GNode *GPos;
 typedef struct GNode *GLink;
 struct GNode {
-    enum Type tag;
+    enum GNodeTag tag;
     union {
         GLink head;
         struct {

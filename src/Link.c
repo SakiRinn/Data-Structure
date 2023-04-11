@@ -1,25 +1,31 @@
 #include "Link.h"
 
 Link Link_init() {
-    Link L = (Link)malloc(sizeof(struct Node));
-    if (!L)
+    Link self;
+    // attribute
+    self.head = (LPos)malloc(sizeof(struct Node));
+    if (!self.head)
         exit(EXIT_FAILURE);
-    L->elem = HEAD_NODE;
-    L->next = NULL;
-    return L;
+    self.head->elem = HEAD_NODE;
+    self.head->next = NULL;
+    // method
+    self.get       = Link_get;
+    self.length    = Link_length;
+    self.locate    = Link_locate;
+    self.insertPos = Link_insertPos;
+    self.insertInd = Link_insertInd;
+    self.insertEnd = Link_insertEnd;
+    self.removePos = Link_removePos;
+    self.removeInd = Link_removeInd;
+    self.delete    = Link_delete;
+    return self;
 }
 
-LoopLink LoopLink_init(ElemType E) {
-    Link L = Link_init();
-    Link_insertPos(L, E);
-    L->next->next = L;
-    return L;
-}
-
-Pos Link_locate(Link L, ind_t subs) {
+LPos Link_locate(Link self, ind_t subs) {
+    LPos L = self.head;
     if (!L)
         return NULL;
-    Pos ptr = L;
+    LPos ptr = L;
     for (int i = 0; i < subs; i++) {
         if (!ptr->next)
             return NULL;
@@ -29,10 +35,10 @@ Pos Link_locate(Link L, ind_t subs) {
     return ptr;
 }
 
-bool Link_insertPos(Pos pre, ElemType E) {
+bool Link_insertPos(LPos pre, ElemType E) {
     if (!pre)
         return false;
-    Pos tmp = (Pos)malloc(sizeof(struct Node));
+    LPos tmp = (LPos)malloc(sizeof(struct Node));
     if (!tmp)
         exit(EXIT_FAILURE);
     tmp->elem = E;
@@ -41,55 +47,60 @@ bool Link_insertPos(Pos pre, ElemType E) {
     return true;
 }
 
-bool Link_insertInd(Link L, ind_t subs, ElemType E) {
+bool Link_insertInd(Link self, ind_t subs, ElemType E) {
+    LPos L = self.head;
     if (!L || L->elem != HEAD_NODE)
         return false;
-    Pos pre = Link_locate(L, subs);
-    return Link_insertPos(pre, E);
+    LPos pre = self.locate(self, subs);
+    return self.insertPos(pre, E);
 }
 
-bool Link_insertEnd(Link L, ElemType E) {
+bool Link_insertEnd(Link self, ElemType E) {
+    LPos L = self.head;
     if (!L || L->elem != HEAD_NODE)
         return false;
-    Pos pre = L;
+    LPos pre = L;
     while (pre->next)
         pre = pre->next;
-    return Link_insertPos(pre, E);
+    return self.insertPos(pre, E);
 }
 
-bool Link_deletePos(Pos pre) {
+bool Link_removePos(LPos pre) {
     if (!pre || !pre->next)
         return false;
-    Pos tmp = pre->next;
+    LPos tmp = pre->next;
     pre->next = tmp->next;
     free(tmp);
     return true;
 }
 
-bool Link_deleteInd(Link L, ind_t subs) {
+bool Link_removeInd(Link self, ind_t subs) {
+    LPos L = self.head;
     if (!L || L->elem != HEAD_NODE)
         return false;
     if (!subs)
         return false;
-    Pos pre = Link_locate(L, subs - 1);
-    return Link_deletePos(pre);
+    LPos pre = self.locate(self, subs - 1);
+    return self.removePos(pre);
 }
 
-ElemType Link_search(Link L, ind_t subs) {
+ElemType Link_get(Link self, ind_t subs) {
+    LPos L = self.head;
     if (!L || L->elem != HEAD_NODE)
         return ERROR;
-    Pos ptr = Link_locate(L, subs);
+    LPos ptr = self.locate(self, subs);
     if (!ptr)
         return ERROR;
     else
         return ptr->elem;
 }
 
-len_t Link_len(Link L) {
+len_t Link_length(Link self) {
+    LPos L = self.head;
     if (!L || L->elem != HEAD_NODE)
         return ERROR;
     len_t count = 0;
-    Pos ptr = L;
+    LPos ptr = L;
     while (ptr->next) {
         ptr = ptr->next;
         count++;
@@ -97,10 +108,11 @@ len_t Link_len(Link L) {
     return count;
 }
 
-bool Link_remove(Link L) {
+bool Link_delete(Link self) {
+    LPos L = self.head;
     if (!L || L->elem != HEAD_NODE)
         return false;
-    while (Link_deletePos(L))
+    while (self.removePos(L))
         ;
     free(L);
     return true;

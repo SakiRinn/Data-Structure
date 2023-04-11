@@ -62,10 +62,10 @@ ElemType CalcRev(Link revp) {
     if (revp->elem != HEAD_NODE || !revp->next)
         return ERROR;
     LStack calcstack = LStack_init();
-    Pos ptr = revp->next;
+    LPos ptr = revp->next;
     while (ptr) {
         if (ptr->elem >= '*' + OPTOR && ptr->elem <= '/' + OPTOR) {
-            if (LStack_len(calcstack) < 2)
+            if (LStack_length(calcstack) < 2)
                 return ERROR;
             int ope = ptr->elem - OPTOR;
             ElemType temp = LStack_pop(calcstack);

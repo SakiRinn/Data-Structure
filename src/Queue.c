@@ -1,40 +1,50 @@
 #include "Queue.h"
-#include ".general.h"
 
 Queue Queue_init(len_t maxSize) {
-    Queue Q = (Queue)malloc(sizeof(Queue));
-    if (!Q)
+    Queue self;
+    // attribute
+    self.data = (ElemType *)malloc((maxSize + 1) * sizeof(ElemType));
+    if (!self.data)
         exit(EXIT_FAILURE);
-    Q->data = (ElemType *)malloc((maxSize + 1) * sizeof(ElemType));
-    if (!Q->data)
-        exit(EXIT_FAILURE);
-    Q->front = -1;
-    Q->rear = -1;
-    Q->maxSize = maxSize;
-    return Q;
+    self.front = -1;
+    self.rear = -1;
+    self.maxSize = maxSize;
+    // method
+    self.add        = Queue_add;
+    self.remove     = Queue_remove;
+    self.isFull     = Queue_isFull;
+    self.isEmpty    = Queue_isEmpty;
+    self.delete     = Queue_delete;
+    return self;
 }
 
-bool Queue_isFull(Queue Q) {
-    return (Q->rear + 1) % (Q->maxSize) == Q->front ? true : false;
+bool Queue_isFull(Queue self) {
+    return (self.rear + 1) % (self.maxSize) == self.front ? true : false;
 }
 
-bool Queue_isEmpty(Queue Q) { return Q->front == Q->rear ? true : false; }
+bool Queue_isEmpty(Queue self) {
+    return self.front == self.rear ? true : false;
+}
 
-bool Queue_add(Queue Q, ElemType E) {
-    if (Queue_isFull(Q))
+bool Queue_add(Queue self, ElemType E) {
+    if (Queue_isFull(self))
         return false;
     else {
-        Q->rear = (Q->rear + 1) % Q->maxSize;
-        Q->data[Q->rear] = E;
+        self.rear = (self.rear + 1) % self.maxSize;
+        self.data[self.rear] = E;
         return true;
     }
 }
 
-ElemType Queue_delete(Queue Q) {
-    if (Queue_isEmpty(Q))
+ElemType Queue_remove(Queue self) {
+    if (Queue_isEmpty(self))
         return ERROR;
     else {
-        Q->front = (Q->front + 1) % Q->maxSize;
-        return Q->data[Q->front];
+        self.front = (self.front + 1) % self.maxSize;
+        return self.data[self.front];
     }
+}
+
+void Queue_delete(Queue self) {
+    free(self.data);
 }

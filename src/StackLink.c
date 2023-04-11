@@ -1,45 +1,43 @@
 #include "StackLink.h"
 
 LStack LStack_init() {
-    LStack S = (LStack)malloc(sizeof(LStack));
-    if (!S)
-        exit(EXIT_FAILURE);
-    S->data = Link_init();
-    S->top = NULL;
-    return S;
+    LStack self;
+    // attribute
+    self.data = Link_init();
+    self.top = NULL;
+    // method
+    self.push       = LStack_push;
+    self.pop        = LStack_pop;
+    self.isEmpty    = LStack_isEmpty;
+    self.length     = LStack_length;
+    self.delete     = LStack_delete;
+    return self;
 }
 
-bool LStack_isEmpty(LStack S) {
-    return (S->data->elem == HEAD_NODE && !S->top) ? true : false;
+bool LStack_isEmpty(LStack self) {
+    return (self.data.head->elem == HEAD_NODE && !self.top) ? true : false;
 }
 
-bool LStack_push(LStack S, ElemType E) {
-    if (Link_insertPos(S->data, E)) {
-        S->top = Link_locate(S->data, 1);
+bool LStack_push(LStack self, ElemType E) {
+    if (self.data.insertPos(self.data.head, E)) {
+        self.top = self.data.head->next;
         return true;
     } else
         return false;
 }
 
-ElemType LStack_pop(LStack S) {
-    if (LStack_isEmpty(S))
+ElemType LStack_pop(LStack self) {
+    if (self.isEmpty(self))
         return ERROR;
-    ElemType elem = S->top->elem;
-    S->top = Link_locate(S->top, 1);
-    if (Link_deletePos(S->data))
-        return elem;
-    else
-        return ERROR;
+    ElemType elem = self.top->elem;
+    self.top = self.top->next;
+    return self.data.removePos(self.data.head) ? elem : ERROR;
 }
 
-bool LStack_remove(LStack S) {
-    if (Link_remove(S->data)) {
-        free(S);
-        return true;
-    } else
-        return false;
+bool LStack_delete(LStack self) {
+    return self.data.delete(self.data) ? true : false;
 }
 
-len_t LStack_len(LStack S) {
-    return Link_len(S->data);
+len_t LStack_length(LStack self) {
+    return self.data.length(self.data);
 }
