@@ -1,28 +1,31 @@
 #include "Link.h"
+#include <stdio.h>
+#include ".general.h"
 
 Link Link_init() {
-    Link self;
+    Link self = (Link)malloc(sizeof(struct _Link));
     // attribute
-    self.head = (LPos)malloc(sizeof(struct Node));
-    if (!self.head)
+    self->headNode = (LPos)malloc(sizeof(struct Node));
+    if (!self->headNode)
         exit(EXIT_FAILURE);
-    self.head->elem = HEAD_NODE;
-    self.head->next = NULL;
+    self->headNode->elem = (ElemType)HEAD_NODE;
+    self->headNode->next = NULL;
     // method
-    self.get       = Link_get;
-    self.length    = Link_length;
-    self.locate    = Link_locate;
-    self.insertPos = Link_insertPos;
-    self.insertInd = Link_insertInd;
-    self.insertEnd = Link_insertEnd;
-    self.removePos = Link_removePos;
-    self.removeInd = Link_removeInd;
-    self.delete    = Link_delete;
+    self->get       = Link_get;
+    self->length    = Link_length;
+    self->locate    = Link_locate;
+    self->insertPos = Link_insertPos;
+    self->insertInd = Link_insertInd;
+    self->insertEnd = Link_insertEnd;
+    self->removePos = Link_removePos;
+    self->removeInd = Link_removeInd;
+    self->delete    = Link_delete;
+    self->print     = Link_print;
     return self;
 }
 
 LPos Link_locate(Link self, ind_t index) {
-    LPos L = self.head;
+    LPos L = self->headNode;
     if (!L)
         return NULL;
     LPos ptr = L;
@@ -48,58 +51,59 @@ bool Link_insertPos(LPos pre, ElemType E) {
 }
 
 bool Link_insertInd(Link self, ind_t index, ElemType E) {
-    LPos L = self.head;
-    if (!L || L->elem != HEAD_NODE)
+    LPos L = self->headNode;
+    if (!L || L->elem != (ElemType)HEAD_NODE)
         return false;
-    LPos pre = self.locate(self, index);
-    return self.insertPos(pre, E);
+    LPos pre = self->locate(self, index);
+    return self->insertPos(pre, E);
 }
 
 bool Link_insertEnd(Link self, ElemType E) {
-    LPos L = self.head;
-    if (!L || L->elem != HEAD_NODE)
+    LPos L = self->headNode;
+    if (!L || L->elem != (ElemType)HEAD_NODE)
         return false;
     LPos pre = L;
     while (pre->next)
         pre = pre->next;
-    return self.insertPos(pre, E);
+    return self->insertPos(pre, E);
 }
 
-bool Link_removePos(LPos pre) {
+ElemType Link_removePos(LPos pre) {
     if (!pre || !pre->next)
-        return false;
+        return (ElemType)ERROR;
     LPos tmp = pre->next;
     pre->next = tmp->next;
+    ElemType value = tmp->elem;
     free(tmp);
-    return true;
+    return value;
 }
 
-bool Link_removeInd(Link self, ind_t index) {
-    LPos L = self.head;
-    if (!L || L->elem != HEAD_NODE)
-        return false;
+ElemType Link_removeInd(Link self, ind_t index) {
+    LPos L = self->headNode;
+    if (!L || L->elem != (ElemType)HEAD_NODE)
+        return (ElemType)ERROR;
     if (!index)
-        return false;
-    LPos pre = self.locate(self, index - 1);
-    return self.removePos(pre);
+        return (ElemType)ERROR;
+    LPos pre = self->locate(self, index - 1);
+    return self->removePos(pre);
 }
 
 ElemType Link_get(Link self, ind_t index) {
-    LPos L = self.head;
-    if (!L || L->elem != HEAD_NODE)
-        return ERROR;
-    LPos ptr = self.locate(self, index);
+    LPos L = self->headNode;
+    if (!L || L->elem != (ElemType)HEAD_NODE)
+        return (ElemType)ERROR;
+    LPos ptr = self->locate(self, index);
     if (!ptr)
-        return ERROR;
+        return (ElemType)ERROR;
     else
         return ptr->elem;
 }
 
-len_t Link_length(Link self) {
-    LPos L = self.head;
-    if (!L || L->elem != HEAD_NODE)
-        return ERROR;
-    len_t count = 0;
+ind_t Link_length(Link self) {
+    LPos L = self->headNode;
+    if (!L || L->elem != (ElemType)HEAD_NODE)
+        return (ElemType)ERROR;
+    ind_t count = 0;
     LPos ptr = L;
     while (ptr->next) {
         ptr = ptr->next;
@@ -108,12 +112,20 @@ len_t Link_length(Link self) {
     return count;
 }
 
-bool Link_delete(Link self) {
-    LPos L = self.head;
-    if (!L || L->elem != HEAD_NODE)
-        return false;
-    while (self.removePos(L))
+void Link_delete(Link self) {
+    LPos L = self->headNode;
+    while (self->removePos(L) != (ElemType)ERROR)
         ;
     free(L);
-    return true;
+    free(self);
+}
+
+void Link_print(Link self) {
+    for (LPos L = self->headNode->next; L; L = L->next) {
+        if (isFloat(L->elem))
+            printf("%g ", (double)L->elem);
+        else
+            printf("%lld ", (long long)L->elem);
+    }
+    putchar('\n');
 }

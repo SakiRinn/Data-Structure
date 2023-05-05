@@ -1,4 +1,9 @@
-/*栈(链)*/
+/**
+ * @file StackLink.h
+ * @brief 链栈
+ *
+ * @details 头结点作为栈的顶部.
+ */
 #ifndef _STACK_LINK_H_
 #define _STACK_LINK_H_
 
@@ -13,7 +18,7 @@
 // Structure Declaration
 //-------------------------------------
 
-typedef struct _LStack LStack;
+typedef struct _LStack *LStack;
 struct _LStack {
     // attribute
     Link data;
@@ -22,8 +27,9 @@ struct _LStack {
     bool        (*push)     (LStack, ElemType);
     ElemType    (*pop)      (LStack);
     bool        (*isEmpty)  (LStack);
-    len_t       (*length)   (LStack);
-    bool        (*delete)   (LStack);
+    ind_t       (*length)   (LStack);
+    void        (*delete)   (LStack);
+    void        (*print)    (LStack);
 };
 
 
@@ -40,9 +46,11 @@ bool LStack_push(LStack self, ElemType E);
 // 出栈
 ElemType LStack_pop(LStack self);
 // 销毁
-bool LStack_delete(LStack self);
+void LStack_delete(LStack self);
 // 返回长度
-len_t LStack_length(LStack self);
+ind_t LStack_length(LStack self);
+// 打印
+void LStack_print(LStack self);
 
 
 #endif

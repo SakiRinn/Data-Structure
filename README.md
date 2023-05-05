@@ -22,6 +22,7 @@ int main()
 ```
 
 此外，由于C语言无法轻易地隐藏 `this/self` 参数，面向对象类的第一个参数**一般**为对象自身。对应的形参为 `self` .
+数据结构的类型实现通常为指针，因此调用方法的语法是 `<object>-><method>` .
 
 **<font color=Red>注意：</font>** 有例外，比如链表的 `insertPos` 方法。请通过形参名是否为 `self` 区分方法是否为例外。
 
@@ -46,12 +47,13 @@ int main()
 {
     Link_double L = Link_double_init();
     /* code... */
-    L.delete(L);
+    L->delete(L);
     return 0;
 }
 ```
 
-**<font color=Red>注意：</font>** 若泛型类的实现基于某些类，需要在调用其泛型宏之前调用基类的泛型宏。
+**<font color=Red>注意1：</font>** 若泛型类的实现基于某些类，需要在调用其泛型宏之前调用基类的泛型宏。
+**<font color=Red>注意1：</font>** 请不要直接将指针类型作为泛型，建议使用 `u_int64_t` 代替。
 
 例如，以链表为基础的泛型类 (名称里带`Link`)，使用前必须先调用一次 `Link` 的泛型宏。
 
@@ -65,7 +67,7 @@ int main()
 {
     LStack_double LS = LStack_double_init();
     /* code... */
-    LS.delete(LS);
+    LS->delete(LS);
     return 0;
 }
 ```

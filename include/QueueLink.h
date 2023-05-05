@@ -1,9 +1,12 @@
-/*队列(链)*/
+/**
+ * @file QueueLink.h
+ * @brief 链队列
+ *
+ * @details 链队列的前指针front就是链表头结点的指针.
+ */
 #ifndef _QUEUE_LINK_H_
 #define _QUEUE_LINK_H_
 
-/* 说明：
-链队列的前指针Front就是链表头结点的指针。 */
 #include ".general.h"
 #include "Link.h"
 #include "generic/QueueLink.h"
@@ -12,7 +15,8 @@
 //-------------------------------------
 // Structure Declaration
 //-------------------------------------
-typedef struct _LQueue LQueue;
+
+typedef struct _LQueue *LQueue;
 struct _LQueue {
     // attribute
     Link data;
@@ -21,8 +25,9 @@ struct _LQueue {
     bool        (*add)      (LQueue, ElemType);
     ElemType    (*remove)   (LQueue);
     bool        (*isEmpty)  (LQueue);
-    len_t       (*length)   (LQueue);
-    bool        (*delete)   (LQueue);
+    ind_t       (*length)   (LQueue);
+    void        (*delete)   (LQueue);
+    void        (*print)    (LQueue);
 };
 
 
@@ -39,9 +44,11 @@ bool LQueue_add(LQueue self, ElemType E);
 // 删除: 成功, 返回被删除元素值; 失败, 返回ERROR
 ElemType LQueue_remove(LQueue self);
 // 销毁
-bool LQueue_delete(LQueue self);
+void LQueue_delete(LQueue self);
 // 返回长度
-len_t LQueue_length(LQueue self);
+ind_t LQueue_length(LQueue self);
+// 打印
+void LQueue_print(LQueue self);
 
 
 #endif

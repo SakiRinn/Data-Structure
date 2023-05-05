@@ -1,26 +1,27 @@
 #ifndef GENERIC_LINK
 #define GENERIC_LINK(elem_t)                                                   \
     typedef struct Node_##elem_t *LPos_##elem_t;                               \
-    typedef struct _Link_##elem_t Link_##elem_t;                               \
+    typedef struct _Link_##elem_t *Link_##elem_t;                              \
     struct Node_##elem_t {                                                     \
         elem_t elem;                                                           \
         LPos_##elem_t next;                                                    \
     };                                                                         \
     struct _Link_##elem_t {                                                    \
-        LPos_##elem_t head;                                                    \
+        LPos_##elem_t headNode;                                                \
         elem_t (*get)(Link_##elem_t, ind_t);                                   \
-        len_t (*length)(Link_##elem_t);                                        \
+        ind_t (*length)(Link_##elem_t);                                        \
         LPos_##elem_t (*locate)(Link_##elem_t, ind_t);                         \
-        bool (*insertPos)(LPos_##elem_t, elem_t);                              \
         bool (*insertInd)(Link_##elem_t, ind_t, elem_t);                       \
         bool (*insertEnd)(Link_##elem_t, elem_t);                              \
-        bool (*removePos)(LPos_##elem_t);                                      \
-        bool (*removeInd)(Link_##elem_t, ind_t);                               \
-        bool (*delete)(Link_##elem_t);                                         \
+        bool (*insertPos)(LPos_##elem_t, elem_t);                              \
+        elem_t (*removePos)(LPos_##elem_t);                                    \
+        elem_t (*removeInd)(Link_##elem_t, ind_t);                             \
+        void (*delete)(Link_##elem_t);                                         \
+        void (*print)(Link_##elem_t);                                          \
     };                                                                         \
-                                                                               \
-    LPos_##elem_t Link_##elem_t##_locate(Link_##elem_t self, ind_t index) {    \
-        LPos_##elem_t L = self.head;                                           \
+    static LPos_##elem_t Link_##elem_t##_locate(Link_##elem_t self,            \
+                                                ind_t index) {                 \
+        LPos_##elem_t L = self->headNode;                                      \
         if (!L)                                                                \
             return NULL;                                                       \
         LPos_##elem_t ptr = L;                                                 \
@@ -32,8 +33,7 @@
         }                                                                      \
         return ptr;                                                            \
     }                                                                          \
-                                                                               \
-    bool Link_##elem_t##_insertPos(LPos_##elem_t pre, elem_t E) {              \
+    static bool Link_##elem_t##_insertPos(LPos_##elem_t pre, elem_t E) {       \
         if (!pre)                                                              \
             return false;                                                      \
         LPos_##elem_t tmp =                                                    \
@@ -45,61 +45,56 @@
         pre->next = tmp;                                                       \
         return true;                                                           \
     }                                                                          \
-                                                                               \
-    bool Link_##elem_t##_insertInd(Link_##elem_t self, ind_t index,            \
-                                   elem_t E) {                                 \
-        LPos_##elem_t L = self.head;                                           \
+    static bool Link_##elem_t##_insertInd(Link_##elem_t self, ind_t index,     \
+                                          elem_t E) {                          \
+        LPos_##elem_t L = self->headNode;                                      \
         if (!L || L->elem != (elem_t)HEAD_NODE)                                \
             return false;                                                      \
-        LPos_##elem_t pre = self.locate(self, index);                          \
-        return self.insertPos(pre, E);                                         \
+        LPos_##elem_t pre = self->locate(self, index);                         \
+        return self->insertPos(pre, E);                                        \
     }                                                                          \
-                                                                               \
-    bool Link_##elem_t##_insertEnd(Link_##elem_t self, elem_t E) {             \
-        LPos_##elem_t L = self.head;                                           \
+    static bool Link_##elem_t##_insertEnd(Link_##elem_t self, elem_t E) {      \
+        LPos_##elem_t L = self->headNode;                                      \
         if (!L || L->elem != (elem_t)HEAD_NODE)                                \
             return false;                                                      \
         LPos_##elem_t pre = L;                                                 \
         while (pre->next)                                                      \
             pre = pre->next;                                                   \
-        return self.insertPos(pre, E);                                         \
+        return self->insertPos(pre, E);                                        \
     }                                                                          \
-                                                                               \
-    bool Link_##elem_t##_removePos(LPos_##elem_t pre) {                        \
+    static elem_t Link_##elem_t##_removePos(LPos_##elem_t pre) {               \
         if (!pre || !pre->next)                                                \
-            return false;                                                      \
+            return (elem_t)ERROR;                                              \
         LPos_##elem_t tmp = pre->next;                                         \
         pre->next = tmp->next;                                                 \
+        elem_t value = tmp->elem;                                              \
         free(tmp);                                                             \
-        return true;                                                           \
+        return value;                                                          \
     }                                                                          \
-                                                                               \
-    bool Link_##elem_t##_removeInd(Link_##elem_t self, ind_t index) {          \
-        LPos_##elem_t L = self.head;                                           \
-        if (!L || L->elem != (elem_t)HEAD_NODE)                                \
-            return false;                                                      \
-        if (!index)                                                            \
-            return false;                                                      \
-        LPos_##elem_t pre = self.locate(self, index - 1);                      \
-        return self.removePos(pre);                                            \
-    }                                                                          \
-                                                                               \
-    elem_t Link_##elem_t##_get(Link_##elem_t self, ind_t index) {              \
-        LPos_##elem_t L = self.head;                                           \
+    static elem_t Link_##elem_t##_removeInd(Link_##elem_t self, ind_t index) { \
+        LPos_##elem_t L = self->headNode;                                      \
         if (!L || L->elem != (elem_t)HEAD_NODE)                                \
             return (elem_t)ERROR;                                              \
-        LPos_##elem_t ptr = self.locate(self, index);                          \
+        if (!index)                                                            \
+            return (elem_t)ERROR;                                              \
+        LPos_##elem_t pre = self->locate(self, index - 1);                     \
+        return self->removePos(pre);                                           \
+    }                                                                          \
+    static elem_t Link_##elem_t##_get(Link_##elem_t self, ind_t index) {       \
+        LPos_##elem_t L = self->headNode;                                      \
+        if (!L || L->elem != (elem_t)HEAD_NODE)                                \
+            return (elem_t)ERROR;                                              \
+        LPos_##elem_t ptr = self->locate(self, index);                         \
         if (!ptr)                                                              \
             return (elem_t)ERROR;                                              \
         else                                                                   \
             return ptr->elem;                                                  \
     }                                                                          \
-                                                                               \
-    len_t Link_##elem_t##_length(Link_##elem_t self) {                         \
-        LPos_##elem_t L = self.head;                                           \
+    static ind_t Link_##elem_t##_length(Link_##elem_t self) {                  \
+        LPos_##elem_t L = self->headNode;                                      \
         if (!L || L->elem != (elem_t)HEAD_NODE)                                \
-            return ERROR;                                                      \
-        len_t count = 0;                                                       \
+            return (ind_t)ERROR;                                               \
+        ind_t count = 0;                                                       \
         LPos_##elem_t ptr = L;                                                 \
         while (ptr->next) {                                                    \
             ptr = ptr->next;                                                   \
@@ -107,33 +102,40 @@
         }                                                                      \
         return count;                                                          \
     }                                                                          \
-                                                                               \
-    bool Link_##elem_t##_delete(Link_##elem_t self) {                          \
-        LPos_##elem_t L = self.head;                                           \
-        if (!L || L->elem != (elem_t)HEAD_NODE)                                \
-            return false;                                                      \
-        while (self.removePos(L))                                              \
+    static void Link_##elem_t##_delete(Link_##elem_t self) {                   \
+        LPos_##elem_t L = self->headNode;                                      \
+        while (self->removePos(L) != (elem_t)ERROR)                            \
             ;                                                                  \
         free(L);                                                               \
-        return true;                                                           \
+        free(self);                                                            \
     }                                                                          \
-                                                                               \
-    Link_##elem_t Link_##elem_t##_init() {                                     \
-        Link_##elem_t self;                                                    \
-        self.head = (LPos_##elem_t)malloc(sizeof(struct Node_##elem_t));       \
-        if (!self.head)                                                        \
+    static void Link_##elem_t##_print(Link_##elem_t self) {                    \
+        for (LPos_##elem_t L = self->headNode->next; L; L = L->next) {         \
+            if (isFloat(L->elem))                                              \
+                printf("%g ", (double)L->elem);                                \
+            else                                                               \
+                printf("%lld ", (long long)L->elem);                           \
+        }                                                                      \
+        putchar('\n');                                                         \
+    }                                                                          \
+    static Link_##elem_t Link_##elem_t##_init() {                              \
+        Link_##elem_t self =                                                   \
+            (Link_##elem_t)malloc(sizeof(struct _Link_##elem_t));              \
+        self->headNode = (LPos_##elem_t)malloc(sizeof(struct Node_##elem_t));  \
+        if (!self->headNode)                                                   \
             exit(EXIT_FAILURE);                                                \
-        self.head->elem = (elem_t)HEAD_NODE;                                   \
-        self.head->next = NULL;                                                \
-        self.get = Link_##elem_t##_get;                                        \
-        self.length = Link_##elem_t##_length;                                  \
-        self.locate = Link_##elem_t##_locate;                                  \
-        self.insertPos = Link_##elem_t##_insertPos;                            \
-        self.insertInd = Link_##elem_t##_insertInd;                            \
-        self.insertEnd = Link_##elem_t##_insertEnd;                            \
-        self.removePos = Link_##elem_t##_removePos;                            \
-        self.removeInd = Link_##elem_t##_removeInd;                            \
-        self.delete = Link_##elem_t##_delete;                                  \
+        self->headNode->elem = (elem_t)HEAD_NODE;                              \
+        self->headNode->next = NULL;                                           \
+        self->get = Link_##elem_t##_get;                                       \
+        self->length = Link_##elem_t##_length;                                 \
+        self->locate = Link_##elem_t##_locate;                                 \
+        self->insertPos = Link_##elem_t##_insertPos;                           \
+        self->insertInd = Link_##elem_t##_insertInd;                           \
+        self->insertEnd = Link_##elem_t##_insertEnd;                           \
+        self->removePos = Link_##elem_t##_removePos;                           \
+        self->removeInd = Link_##elem_t##_removeInd;                           \
+        self->delete = Link_##elem_t##_delete;                                 \
+        self->print = Link_##elem_t##_print;                                   \
         return self;                                                           \
     }
 #endif

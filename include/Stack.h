@@ -1,4 +1,8 @@
-/*栈*/
+/**
+ * @file Stack.h
+ * @brief 栈
+ *
+ */
 #ifndef _STACK_H_
 #define _STACK_H_
 
@@ -10,18 +14,19 @@
 // Structure Declaration
 //-------------------------------------
 
-typedef struct _Stack Stack;
+typedef struct _Stack *Stack;
 struct _Stack {
     // attribute
     ElemType *data;
     ind_t top;
-    len_t maxSize;
+    ind_t maxSize;
     // method
     bool        (*push)     (Stack, ElemType);
     ElemType    (*pop)      (Stack);
     bool        (*isFull)   (Stack);
     bool        (*isEmpty)  (Stack);
     void        (*delete)   (Stack);
+    void        (*print)    (Stack);
 };
 
 
@@ -30,7 +35,7 @@ struct _Stack {
 //-------------------------------------
 
 // 初始化
-Stack Stack_init(len_t maxSize);
+Stack Stack_init(ind_t maxSize);
 // 是否为满
 bool Stack_isFull(Stack self);
 // 是否为空
@@ -41,6 +46,8 @@ bool Stack_push(Stack self, ElemType E);
 ElemType Stack_pop(Stack self);
 // 销毁
 void Stack_delete(Stack self);
+// 打印
+void Stack_print(Stack self);
 
 
 #endif

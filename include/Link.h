@@ -1,4 +1,8 @@
-/*链表*/
+/**
+ * @file Link.h
+ * @brief 链表
+ *
+ */
 #ifndef _LINK_H_
 #define _LINK_H_
 
@@ -12,27 +16,28 @@
 //-------------------------------------
 
 // 头结点的elem，用于标记头结点
-#define HEAD_NODE 0xABCABC
+#define HEAD_NODE 0xCDC
 
 typedef struct Node *LPos;
-typedef struct _Link Link;
+typedef struct _Link *Link;
 struct Node {
     ElemType elem;
     LPos next;
 };
 struct _Link {
     // attribute
-    LPos head;
+    LPos headNode;
     // method
     ElemType    (*get)          (Link, ind_t);
-    len_t       (*length)       (Link);
+    ind_t       (*length)       (Link);
     LPos        (*locate)       (Link, ind_t);
     bool        (*insertInd)    (Link, ind_t, ElemType);
     bool        (*insertEnd)    (Link, ElemType);
     bool        (*insertPos)    (LPos, ElemType);
-    bool        (*removePos)    (LPos);
-    bool        (*removeInd)    (Link, ind_t);
-    bool        (*delete)       (Link);
+    ElemType    (*removePos)    (LPos);
+    ElemType    (*removeInd)    (Link, ind_t);
+    void        (*delete)       (Link);
+    void        (*print)        (Link);
 };
 
 
@@ -51,15 +56,17 @@ bool Link_insertInd(Link self, ind_t index, ElemType E);
 // 尾插: 在尾部插入一个结点
 bool Link_insertEnd(Link self, ElemType E);
 // 删除 (按地址): 删除地址pre指向节点的后一个结点
-bool Link_removePos(LPos pre);
+ElemType Link_removePos(LPos pre);
 // 删除 (按下标): 删除第index个结点
-bool Link_removeInd(Link self, ind_t index);
+ElemType Link_removeInd(Link self, ind_t index);
 // 查找: 返回链表L中第index个结点的元素值
 ElemType Link_get(Link self, ind_t index);
 // 返回长度
-len_t Link_length(Link self);
+ind_t Link_length(Link self);
 // 销毁
-bool Link_delete(Link self);
+void Link_delete(Link self);
+// 打印
+void Link_print(Link self);
 
 
 #endif

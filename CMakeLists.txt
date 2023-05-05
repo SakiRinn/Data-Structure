@@ -18,4 +18,6 @@ aux_source_directory(app APP_DIR)
 include_directories(include)
 include_directories(app_header)
 
+link_libraries(m)
+
 add_executable(object main.c ${SRC_DIR} ${APP_DIR})

@@ -1,105 +1,146 @@
+#include <string.h>
 #include "Calculator.h"
 #include "StackLink.h"
+#include "QueueLink.h"
+
+GENERIC_LINK(int)
+GENERIC_QUEUE_LINK(int)
+GENERIC_STACK_LINK(int)
+GENERIC_LINK(double)
+GENERIC_STACK_LINK(double)
 
 RPN expr2RPN(char expr[]) {
-    // 初始化操作符栈和RPN容器
-    LStack_int opt_S = LStack_int_init();
-    RPN rpn = Link_int_init();
+    RPN rpn = Link_init();
 
-    char *ptr = expr;
-    while (ptr) {
+    LStack_double opt_S = LStack_double_init();     // 存操作符
+    LStack_int weight_S = LStack_int_init();        // 存上一个操作符的权重
+    LQueue_int num_Q = LQueue_int_init();           // 实则为char队列, 存数字字符串
 
-        // 处理当前元素
-        switch (*ptr) {
-        case '*':
-        case '/':
-            while (opt_S.top &&
-                   (opt_S.top->elem == '*' || opt_S.top->elem == '/'))
-                rpn.insertEnd(rpn, opt_S.pop(opt_S) + OPERATOR);
-            opt_S.push(opt_S, *ptr);
-            break;
-        case '+':
-        case '-':
-            while (opt_S.top &&
-                   (opt_S.top->elem == '*' || opt_S.top->elem == '/' ||
-                    opt_S.top->elem == '+' || opt_S.top->elem == '-'))
-                rpn.insertEnd(rpn, opt_S.pop(opt_S) + OPERATOR);
-            opt_S.push(opt_S, *ptr);
-            break;
-        case '(':
-            opt_S.push(opt_S, *ptr);
-            break;
-        case ')':
-            while (opt_S.top->elem != '(')
-                rpn.insertEnd(rpn, opt_S.pop(opt_S) + OPERATOR);
-            opt_S.pop(opt_S);
-            break;
-        default:
-            if ((*ptr >= '0' && *ptr <= '9')) {
-                char temp_num[NUMAXLEN] = {0};
-                int i = 0;
-                for (int i = 0; i < NUMAXLEN; i++) {
-                    temp_num[i] = *ptr;
-                    if (ptr[1] >= '0' && ptr[1] <= '9')
-                        ptr++;
-                    else
-                        break;
-                }
-                rpn.insertEnd(rpn, atoi(temp_num));
+    for (int i = 0; i < strlen(expr); i++) {
+
+        /* 数字部分 */
+        if ((expr[i] >= '0' && expr[i] <= '9') || expr[i] == '.') {
+            num_Q->add(num_Q, expr[i]);
+            continue;
+        }
+        else {
+            char num_string[MAX_DIGIT] = {'\0'};
+            int j = 0;
+            while (!num_Q->isEmpty(num_Q)) {
+                num_string[j] = (char)num_Q->remove(num_Q);
+                j++;
             }
+            if (j != 0)
+                rpn->insertEnd(rpn, (ElemType)strtod(num_string, NULL));
         }
 
-        // next
-        if (ptr[1] == '\0') {
-            while (!opt_S.isEmpty(opt_S)) {
-                int num = opt_S.pop(opt_S) + OPERATOR;
-                if (num != ERROR)
-                    rpn.insertEnd(rpn, num);
-            }
+        /* 操作符部分 */
+        int weight;
+        switch (expr[i]) {
+        case '+':
+        case '-':
+            weight = 1;
             break;
-        } else
-            ptr++;
+        case '*':
+        case '/':
+            weight = 2;
+            break;
+        case '(':
+            // 左括号: 操作符入栈
+            weight_S->push(weight_S, 0);
+            opt_S->push(opt_S, expr[i]);
+            continue;
+        case ')':
+            // 右括号: 操作符逐个出栈, 直到遇到左括号
+            while (!opt_S->isEmpty(opt_S) && opt_S->top->elem != '(') {
+                weight_S->pop(weight_S);
+                rpn->insertEnd(rpn, (ElemType)(opt_S->pop(opt_S) + OPERATOR));
+            }
+            weight_S->pop(weight_S);
+            opt_S->pop(opt_S);
+            continue;
+        case ' ':
+            continue;
+        default:
+            exit(EXIT_FAILURE);
+        }
+
+        // 如果当前操作符权重不大于栈顶权重, 则栈顶操作符出栈
+        while (!weight_S->isEmpty(weight_S) && weight <= weight_S->top->elem) {
+            weight_S->pop(weight_S);
+            rpn->insertEnd(rpn, (ElemType)(opt_S->pop(opt_S) + OPERATOR));
+        }
+
+        // 入栈
+        weight_S->push(weight_S, weight);
+        opt_S->push(opt_S, expr[i]);
     }
 
-    opt_S.delete(opt_S);
+    // 输出最后一个数
+    char num_string[MAX_DIGIT] = {'\0'};
+    int j = 0;
+    while (!num_Q->isEmpty(num_Q)) {
+        num_string[j] = (char)num_Q->remove(num_Q);
+        j++;
+    }
+    if (j != 0)
+        rpn->insertEnd(rpn, (ElemType)strtod(num_string, NULL));
+    // 清空操作符栈
+    while (!opt_S->isEmpty(opt_S))
+        rpn->insertEnd(rpn, (ElemType)(opt_S->pop(opt_S) + OPERATOR));
+
+    opt_S->delete(opt_S);
+    weight_S->delete(weight_S);
+    num_Q->delete(num_Q);
     return rpn;
 }
 
 double calcRPN(RPN rpn) {
     LStack_double calc_S = LStack_double_init();
-    LPos_int data = rpn.head;
+    LPos data = rpn->headNode;
     if (data->elem != HEAD_NODE || !data->next)
         return ERROR;
 
-    for (LPos_int ptr = data->next; ptr; ptr = ptr->next) {
+    for (LPos ptr = data->next; ptr; ptr = ptr->next) {
         if (ptr->elem >= '*' + OPERATOR && ptr->elem <= '/' + OPERATOR) {
-            if (rpn.length(rpn) < 2)
+            if (rpn->length(rpn) < 2)
                 return ERROR;
             int opt = ptr->elem - OPERATOR;
-            double temp = calc_S.pop(calc_S);
+            double temp = calc_S->pop(calc_S);
 
             switch (opt) {
             case '+':
-                calc_S.push(calc_S, calc_S.pop(calc_S) + temp);
+                calc_S->push(calc_S, calc_S->pop(calc_S) + temp);
                 break;
             case '-':
-                calc_S.push(calc_S, calc_S.pop(calc_S) - temp);
+                calc_S->push(calc_S, calc_S->pop(calc_S) - temp);
                 break;
             case '*':
-                calc_S.push(calc_S, calc_S.pop(calc_S) * temp);
+                calc_S->push(calc_S, calc_S->pop(calc_S) * temp);
                 break;
             case '/':
-                calc_S.push(calc_S, calc_S.pop(calc_S) / temp);
+                calc_S->push(calc_S, calc_S->pop(calc_S) / temp);
                 break;
             default:
                 return ERROR;
             }
 
         } else
-            calc_S.push(calc_S, ptr->elem);
+            calc_S->push(calc_S, ptr->elem);
     }
 
-    double result = calc_S.pop(calc_S);
-    calc_S.delete(calc_S);
+    double result = calc_S->pop(calc_S);
+    calc_S->delete(calc_S);
     return result;
+}
+
+void printRPN(RPN rpn) {
+    LPos_double data = rpn->headNode;
+    for (LPos_double ptr = data->next; ptr; ptr = ptr->next) {
+        if (equal(ptr->elem, '+' + OPERATOR) && ptr->elem <= '/' + OPERATOR)
+            printf("%c ", (int)ptr->elem - OPERATOR);
+        else
+            printf("%d ", ptr->elem);
+    }
+    putchar('\n');
 }

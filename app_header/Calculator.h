@@ -8,28 +8,29 @@
 
 #include "Link.h"
 #include "StackLink.h"
+#include "QueueLink.h"
 
 #define NUMAXLEN 10
 #define OPERATOR 0xACEBDF
+#define MAX_DIGIT 16
 
 
 //-------------------------------------
 // Structure Declaration
 //-------------------------------------
 
-GENERIC_LINK(int);
-GENERIC_LINK(double);
-GENERIC_STACK_LINK(int);
-GENERIC_STACK_LINK(double);
-typedef Link_int RPN;
+typedef Link RPN;
+
 
 //-------------------------------------
 // Function Declaration
 //-------------------------------------
 
-// 将中缀表达式转换成后缀表达式 (a.k.a RPN, Reverse Polish Notation, 逆波兰)
+// 中缀表达式转RPN (Reverse Polish Notation, 逆波兰)
 RPN expr2RPN(char expr[]);
-// 后缀表达式求值
-double calcRPN(RPN revp);
+// RPN求值
+double calcRPN(RPN rpn);
+// RPN打印
+void printRPN(RPN rpn);
 
 #endif

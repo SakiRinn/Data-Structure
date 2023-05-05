@@ -1,10 +1,13 @@
-/*双向栈*/
+/**
+ * @file StackDbDir.h
+ * @brief 双向栈
+ *
+ * @details 使用一个数组实现的一对栈.
+ * 栈底分别位于两边, 只要有空位就能进栈. (未测试)
+ */
 #ifndef _STACK_DOUBLE_DIRECTION_H_
 #define _STACK_DOUBLE_DIRECTION_H_
 
-/* 说明：
-使用一个数组实现的一对栈。
-栈底分别位于两边，只要有空位就能进栈。 */
 #include ".general.h"
 
 
@@ -12,16 +15,17 @@
 // Structure Declaration
 //-------------------------------------
 
-typedef struct _DStack DStack;
+// 两个栈的标记, 用于在push/pop时指定具体栈
 typedef enum {
     S1, S2,
 } StackTag;
+typedef struct _DStack *DStack;
 struct _DStack {
     // attribute
     ElemType *data;
     ind_t top1;
     ind_t top2;
-    len_t maxSize;
+    ind_t maxSize;
     // method
     bool        (*push)    (DStack, ElemType, StackTag);
     ElemType    (*pop)     (DStack, StackTag);
@@ -34,7 +38,7 @@ struct _DStack {
 //-------------------------------------
 
 // 初始化
-DStack DStack_init(len_t maxSize);
+DStack DStack_init(ind_t maxSize);
 // 进栈
 bool DStack_push(DStack self, ElemType E, StackTag tag);
 // 出栈
