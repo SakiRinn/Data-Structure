@@ -9,14 +9,14 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 
 add_subdirectory(include)
 add_subdirectory(src)
-add_subdirectory(app_header)
+add_subdirectory(appHeader)
 add_subdirectory(app)
 
 aux_source_directory(src SRC_DIR)
 aux_source_directory(app APP_DIR)
 
 include_directories(include)
-include_directories(app_header)
+include_directories(appHeader)
 
 link_libraries(m)
 
