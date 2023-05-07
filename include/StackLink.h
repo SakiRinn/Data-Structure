@@ -2,13 +2,11 @@
  * @file StackLink.h
  * @brief 链栈
  *
- * @details 头结点作为栈的顶部.
+ * @details 头结点作为栈的顶部, 栈顶指针就是链表头结点的指针.
  */
 #ifndef _STACK_LINK_H_
 #define _STACK_LINK_H_
 
-/* 说明：
-链栈的栈顶指针就是链表头结点的指针。 */
 #include ".general.h"
 #include "Link.h"
 #include "generic/StackLink.h"

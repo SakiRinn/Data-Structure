@@ -4,14 +4,14 @@
 #include "QueueLink.h"
 #include "StackLink.h"
 
-GENERIC_LINK(u_int64_t)
-GENERIC_QUEUE_LINK(u_int64_t)
-GENERIC_STACK_LINK(u_int64_t)
+GENERIC_LINK(pointer)
+GENERIC_QUEUE_LINK(pointer)
+GENERIC_STACK_LINK(pointer)
 
 
 BiTree BiTree_init(ElemType arr[], ind_t len) {
     // 队列：存储未生成左右孩子的结点的地址
-    LQueue_u_int64_t Q = LQueue_u_int64_t_init();
+    LQueue_pointer Q = LQueue_pointer_init();
     int i = 0;
 
     // 输入第一个数据
@@ -22,7 +22,7 @@ BiTree BiTree_init(ElemType arr[], ind_t len) {
     BiTree BT = (BiTree)malloc(sizeof(struct BiTreeNode));
     BT->elem = arr[i];
     BT->left = BT->right = NULL;
-    Q->add(Q, (u_int64_t)BT);
+    Q->add(Q, (pointer)BT);
     i++;
 
     // 若队列非空，则取出一个结点，建立其左右孩子
@@ -36,7 +36,7 @@ BiTree BiTree_init(ElemType arr[], ind_t len) {
             tempNode->left = (BiTree)malloc(sizeof(struct BiTreeNode));
             tempNode->left->elem = arr[i];
             tempNode->left->left = tempNode->left->right = NULL;
-            Q->add(Q, (u_int64_t)tempNode->left);
+            Q->add(Q, (pointer)tempNode->left);
         }
         i++;
         // 2. 右孩子
@@ -46,7 +46,7 @@ BiTree BiTree_init(ElemType arr[], ind_t len) {
             tempNode->right = (BiTree)malloc(sizeof(struct BiTreeNode));
             tempNode->right->elem = arr[i];
             tempNode->right->left = tempNode->right->right = NULL;
-            Q->add(Q, (u_int64_t)tempNode->right);
+            Q->add(Q, (pointer)tempNode->right);
         }
         i++;
     }
@@ -85,11 +85,11 @@ BiTree BiTree_initPre(ElemType arr[], ind_t len) {
     if (len < 1 || arr[0] == EMPTY)
         return NULL;
     int i = 0;
-    LStack_u_int64_t S = LStack_u_int64_t_init();
+    LStack_pointer S = LStack_pointer_init();
     // first
     BiTree BT = (BiTree)malloc(sizeof(struct BiTreeNode));
     BiTree BTemp = BT;
-    S->push(S, (u_int64_t)BTemp);
+    S->push(S, (pointer)BTemp);
     BTemp->elem = arr[i];
     BTemp->left = BTemp->right = NULL;
     i++;
@@ -99,7 +99,7 @@ BiTree BiTree_initPre(ElemType arr[], ind_t len) {
         while (i < len && !BTemp->left) {
             if (arr[i] != EMPTY) {
                 BTemp->left = (BiTree)malloc(sizeof(struct BiTreeNode));
-                S->push(S, (u_int64_t)BTemp);
+                S->push(S, (pointer)BTemp);
                 BTemp = BTemp->left;
                 BTemp->elem = arr[i];
                 BTemp->left = BTemp->right = NULL;
@@ -150,13 +150,13 @@ void BiTree_reTravPost(BiTree BT) {
 }
 
 void BiTree_travPre(BiTree BT) {
-    LStack_u_int64_t S = LStack_u_int64_t_init();
+    LStack_pointer S = LStack_pointer_init();
     BiTree BTemp = BT;
     while (BTemp || !S->isEmpty(S)) {
         // left
         while (BTemp) {
             printf("%d ", BTemp->elem);
-            S->push(S, (u_int64_t)BTemp);
+            S->push(S, (pointer)BTemp);
             BTemp = BTemp->left;
         }
         // right
@@ -165,12 +165,12 @@ void BiTree_travPre(BiTree BT) {
 }
 
 void BiTree_travIn(BiTree BT) {
-    LStack_u_int64_t S = LStack_u_int64_t_init();
+    LStack_pointer S = LStack_pointer_init();
     BiTree BTemp = BT;
     while (BTemp || !S->isEmpty(S)) {
         // left
         while (BTemp) {
-            S->push(S, (u_int64_t)BTemp);
+            S->push(S, (pointer)BTemp);
             BTemp = BTemp->left;
         }
         // right
@@ -181,14 +181,14 @@ void BiTree_travIn(BiTree BT) {
 }
 
 void BiTree_travPost(BiTree BT) {
-    LStack_u_int64_t S = LStack_u_int64_t_init(), SBrc = LStack_u_int64_t_init();
+    LStack_pointer S = LStack_pointer_init(), SBrc = LStack_pointer_init();
     BiTree BTemp = BT;
     while (BTemp || !S->isEmpty(S)) {
         // left
         while (BTemp) {
-            S->push(S, (u_int64_t)BTemp);
+            S->push(S, (pointer)BTemp);
             if (BTemp->left && BTemp->right)
-                SBrc->push(SBrc, (u_int64_t)BTemp);
+                SBrc->push(SBrc, (pointer)BTemp);
             BTemp = BTemp->left;
         }
         // right
@@ -209,12 +209,12 @@ void BiTree_travPost(BiTree BT) {
 }
 
 void BiTree_travPost2(BiTree BT) {
-    LStack_u_int64_t S = LStack_u_int64_t_init();
+    LStack_pointer S = LStack_pointer_init();
     BiTree BTemp = BT, BTprt = NULL;
     while (BTemp || !S->isEmpty(S)) {
         // left
         while (BTemp) {
-            S->push(S, (u_int64_t)BTemp);
+            S->push(S, (pointer)BTemp);
             BTemp = BTemp->left;
         }
         // right
@@ -234,13 +234,13 @@ void BiTree_travPost2(BiTree BT) {
 }
 
 void BiTree_travPost3(BiTree BT) {
-    LStack_u_int64_t S = LStack_u_int64_t_init(), Sprt = LStack_u_int64_t_init();
+    LStack_pointer S = LStack_pointer_init(), Sprt = LStack_pointer_init();
     BiTree BTemp = BT;
     while (BTemp || !S->isEmpty(S)) {
         // right
         while (BTemp) {
-            Sprt->push(Sprt, (u_int64_t)BTemp);
-            S->push(S, (u_int64_t)BTemp);
+            Sprt->push(Sprt, (pointer)BTemp);
+            S->push(S, (pointer)BTemp);
             BTemp = BTemp->right;
         }
         // left

@@ -20,6 +20,8 @@
 typedef u_int64_t ind_t;
 // 全局数据类型
 typedef int ElemType;
+// 指针类型 (用于泛型类)
+typedef u_int64_t pointer;
 
 
 //-------------------------------------

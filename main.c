@@ -1,17 +1,9 @@
-// #include "Calculator.h"
-#include ".general.h"
-#include "Stack.h"
-#include "StackLink.h"
+#include "Calculator.h"
 
-GENERIC_STACK(int)
 
 int main() {
-    Stack_int LS = Stack_int_init(100);
-
-    for (int i = 0; i < 77; i++)
-        LS->push(LS, i + 1);
-    LS->pop(LS);
-    LS->print(LS);
-
+    char expr[] = "1+2*(3-(4+6))/5";
+    RPN rpn = expr2RPN(expr);
+    printRPN(rpn);
     return 0;
 }

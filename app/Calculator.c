@@ -13,17 +13,20 @@ RPN expr2RPN(char expr[]) {
     RPN rpn = Link_init();
 
     LStack_double opt_S = LStack_double_init();     // 存操作符
-    LStack_int weight_S = LStack_int_init();        // 存上一个操作符的权重
+    LStack_int weight_S = LStack_int_init();        // 存操作符的权重
     LQueue_int num_Q = LQueue_int_init();           // 实则为char队列, 存数字字符串
 
     for (int i = 0; i < strlen(expr); i++) {
 
         /* 数字部分 */
         if ((expr[i] >= '0' && expr[i] <= '9') || expr[i] == '.') {
+            // 若为数字, 入num_Q队列, 然后直接快进到下个循环
             num_Q->add(num_Q, expr[i]);
             continue;
         }
         else {
+            // 若不为数字, 将num_Q队列的字符转换为数字后加到rpn中, 然后清空队列
+            // 不快进, 而是继续之后的“操作符部分”
             char num_string[MAX_DIGIT] = {'\0'};
             int j = 0;
             while (!num_Q->isEmpty(num_Q)) {
@@ -37,6 +40,7 @@ RPN expr2RPN(char expr[]) {
         /* 操作符部分 */
         int weight;
         switch (expr[i]) {
+        // 加减乘除: 赋予权重
         case '+':
         case '-':
             weight = 1;
@@ -45,13 +49,14 @@ RPN expr2RPN(char expr[]) {
         case '/':
             weight = 2;
             break;
+
+        // 左括号: 权重为0, 入栈后快进
         case '(':
-            // 左括号: 操作符入栈
             weight_S->push(weight_S, 0);
             opt_S->push(opt_S, expr[i]);
             continue;
+        // 右括号: 操作符逐个出栈, 直到遇到左括号
         case ')':
-            // 右括号: 操作符逐个出栈, 直到遇到左括号
             while (!opt_S->isEmpty(opt_S) && opt_S->top->elem != '(') {
                 weight_S->pop(weight_S);
                 rpn->insertEnd(rpn, (ElemType)(opt_S->pop(opt_S) + OPERATOR));
@@ -59,6 +64,8 @@ RPN expr2RPN(char expr[]) {
             weight_S->pop(weight_S);
             opt_S->pop(opt_S);
             continue;
+
+        // 空格: 快进
         case ' ':
             continue;
         default:
@@ -71,7 +78,7 @@ RPN expr2RPN(char expr[]) {
             rpn->insertEnd(rpn, (ElemType)(opt_S->pop(opt_S) + OPERATOR));
         }
 
-        // 入栈
+        // 操作符入栈
         weight_S->push(weight_S, weight);
         opt_S->push(opt_S, expr[i]);
     }
@@ -135,12 +142,21 @@ double calcRPN(RPN rpn) {
 }
 
 void printRPN(RPN rpn) {
-    LPos_double data = rpn->headNode;
-    for (LPos_double ptr = data->next; ptr; ptr = ptr->next) {
-        if (equal(ptr->elem, '+' + OPERATOR) && ptr->elem <= '/' + OPERATOR)
+    LPos data = rpn->headNode;
+    for (LPos ptr = data->next; ptr; ptr = ptr->next) {
+        switch ((int)ptr->elem) {
+        case '+' + OPERATOR:
+        case '-' + OPERATOR:
+        case '*' + OPERATOR:
+        case '/' + OPERATOR:
             printf("%c ", (int)ptr->elem - OPERATOR);
-        else
-            printf("%d ", ptr->elem);
+            continue;
+        default:
+            if (isFloat(ptr->elem))
+                printf("%g ", (double)ptr->elem);
+            else
+                printf("%lld ", (long long)ptr->elem);
+        }
     }
     putchar('\n');
 }
