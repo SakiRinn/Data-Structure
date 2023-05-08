@@ -6,6 +6,7 @@
 #ifndef _CALCULATOR_H_
 #define _CALCULATOR_H_
 
+#include ".general.h"
 #include "Link.h"
 #include "StackLink.h"
 #include "QueueLink.h"
@@ -34,11 +35,11 @@ typedef Link RPN;
  * 例: (a-b)*(c+5) -> ((a-b)*(c+5)) -> ((ab)-(c+5)) -> ... -> ((ab)-(c5)+)* -> ab-c5+*
  *
  * @param expr 待求的中缀表达式
- * @return 后缀表达式对象 (实则为线性表)
+ * @return 后缀表达式对象 (a.k.a 线性表)
  */
 RPN expr2RPN(char expr[]);
 // RPN求值
-double calcRPN(RPN rpn);
+ElemType calcRPN(RPN rpn);
 // RPN打印
 void printRPN(RPN rpn);
 

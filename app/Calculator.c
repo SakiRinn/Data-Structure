@@ -49,7 +49,6 @@ RPN expr2RPN(char expr[]) {
         case '/':
             weight = 2;
             break;
-
         // 左括号: 权重为0, 入栈后快进
         case '(':
             weight_S->push(weight_S, 0);
@@ -64,7 +63,6 @@ RPN expr2RPN(char expr[]) {
             weight_S->pop(weight_S);
             opt_S->pop(opt_S);
             continue;
-
         // 空格: 快进
         case ' ':
             continue;
@@ -102,42 +100,37 @@ RPN expr2RPN(char expr[]) {
     return rpn;
 }
 
-double calcRPN(RPN rpn) {
-    LStack_double calc_S = LStack_double_init();
-    LPos data = rpn->headNode;
-    if (data->elem != HEAD_NODE || !data->next)
+ElemType calcRPN(RPN rpn) {
+    LStack num_S = LStack_init();
+    if (rpn->headNode->elem != HEAD_NODE || rpn->length(rpn) < 2)
         return ERROR;
 
-    for (LPos ptr = data->next; ptr; ptr = ptr->next) {
-        if (ptr->elem >= '*' + OPERATOR && ptr->elem <= '/' + OPERATOR) {
-            if (rpn->length(rpn) < 2)
-                return ERROR;
-            int opt = ptr->elem - OPERATOR;
-            double temp = calc_S->pop(calc_S);
-
-            switch (opt) {
-            case '+':
-                calc_S->push(calc_S, calc_S->pop(calc_S) + temp);
-                break;
-            case '-':
-                calc_S->push(calc_S, calc_S->pop(calc_S) - temp);
-                break;
-            case '*':
-                calc_S->push(calc_S, calc_S->pop(calc_S) * temp);
-                break;
-            case '/':
-                calc_S->push(calc_S, calc_S->pop(calc_S) / temp);
-                break;
-            default:
-                return ERROR;
-            }
-
-        } else
-            calc_S->push(calc_S, ptr->elem);
+    for (LPos ptr = rpn->headNode->next; ptr; ptr = ptr->next) {
+        int temp;
+        switch (ptr->elem) {
+        /* 操作符部分 */
+        case '+' + OPERATOR:
+            num_S->push(num_S, num_S->pop(num_S) + num_S->pop(num_S));
+            break;
+        case '-' + OPERATOR:
+            temp = num_S->pop(num_S);
+            num_S->push(num_S, num_S->pop(num_S) - temp);
+            break;
+        case '*' + OPERATOR:
+            num_S->push(num_S, num_S->pop(num_S) * num_S->pop(num_S));
+            break;
+        case '/' + OPERATOR:
+            temp = num_S->pop(num_S);
+            num_S->push(num_S, num_S->pop(num_S) / temp);
+            break;
+        /* 数字部分 */
+        default:
+            num_S->push(num_S, ptr->elem);
+        }
     }
 
-    double result = calc_S->pop(calc_S);
-    calc_S->delete(calc_S);
+    ElemType result = num_S->pop(num_S);
+    num_S->delete(num_S);
     return result;
 }
 
