@@ -12,16 +12,16 @@ GENERIC_STACK_LINK(double)
 RPN expr2RPN(char expr[]) {
     RPN rpn = Link_init();
 
-    LStack_double opt_S = LStack_double_init();     // 存操作符
-    LStack_int weight_S = LStack_int_init();        // 存操作符的权重
-    LQueue_int num_Q = LQueue_int_init();           // 实则为char队列, 存数字字符串
+    LStack_double optS = LStack_double_init();     // 存操作符
+    LStack_int weightS = LStack_int_init();        // 存操作符的权重
+    LQueue_int numQ = LQueue_int_init();           // 实则为char队列, 存数字字符串
 
     for (int i = 0; i < strlen(expr); i++) {
 
         /* 数字部分 */
         if ((expr[i] >= '0' && expr[i] <= '9') || expr[i] == '.') {
             // 若为数字, 入num_Q队列, 然后直接快进到下个循环
-            num_Q->add(num_Q, expr[i]);
+            numQ->add(numQ, expr[i]);
             continue;
         }
         else {
@@ -29,8 +29,8 @@ RPN expr2RPN(char expr[]) {
             // 不快进, 而是继续之后的“操作符部分”
             char num_string[MAX_DIGIT] = {'\0'};
             int j = 0;
-            while (!num_Q->isEmpty(num_Q)) {
-                num_string[j] = (char)num_Q->remove(num_Q);
+            while (!numQ->isEmpty(numQ)) {
+                num_string[j] = (char)numQ->remove(numQ);
                 j++;
             }
             if (j != 0)
@@ -51,17 +51,17 @@ RPN expr2RPN(char expr[]) {
             break;
         // 左括号: 权重为0, 入栈后快进
         case '(':
-            weight_S->push(weight_S, 0);
-            opt_S->push(opt_S, expr[i]);
+            weightS->push(weightS, 0);
+            optS->push(optS, expr[i]);
             continue;
         // 右括号: 操作符逐个出栈, 直到遇到左括号
         case ')':
-            while (!opt_S->isEmpty(opt_S) && opt_S->top->elem != '(') {
-                weight_S->pop(weight_S);
-                rpn->insertEnd(rpn, (ElemType)(opt_S->pop(opt_S) + OPERATOR));
+            while (!optS->isEmpty(optS) && optS->top->elem != '(') {
+                weightS->pop(weightS);
+                rpn->insertEnd(rpn, (ElemType)(optS->pop(optS) + OPERATOR));
             }
-            weight_S->pop(weight_S);
-            opt_S->pop(opt_S);
+            weightS->pop(weightS);
+            optS->pop(optS);
             continue;
         // 空格: 快进
         case ' ':
@@ -71,37 +71,37 @@ RPN expr2RPN(char expr[]) {
         }
 
         // 如果当前操作符权重不大于栈顶权重, 则栈顶操作符出栈
-        while (!weight_S->isEmpty(weight_S) && weight <= weight_S->top->elem) {
-            weight_S->pop(weight_S);
-            rpn->insertEnd(rpn, (ElemType)(opt_S->pop(opt_S) + OPERATOR));
+        while (!weightS->isEmpty(weightS) && weight <= weightS->top->elem) {
+            weightS->pop(weightS);
+            rpn->insertEnd(rpn, (ElemType)(optS->pop(optS) + OPERATOR));
         }
 
         // 操作符入栈
-        weight_S->push(weight_S, weight);
-        opt_S->push(opt_S, expr[i]);
+        weightS->push(weightS, weight);
+        optS->push(optS, expr[i]);
     }
 
     // 输出最后一个数
     char num_string[MAX_DIGIT] = {'\0'};
     int j = 0;
-    while (!num_Q->isEmpty(num_Q)) {
-        num_string[j] = (char)num_Q->remove(num_Q);
+    while (!numQ->isEmpty(numQ)) {
+        num_string[j] = (char)numQ->remove(numQ);
         j++;
     }
     if (j != 0)
         rpn->insertEnd(rpn, (ElemType)strtod(num_string, NULL));
     // 清空操作符栈
-    while (!opt_S->isEmpty(opt_S))
-        rpn->insertEnd(rpn, (ElemType)(opt_S->pop(opt_S) + OPERATOR));
+    while (!optS->isEmpty(optS))
+        rpn->insertEnd(rpn, (ElemType)(optS->pop(optS) + OPERATOR));
 
-    opt_S->delete(opt_S);
-    weight_S->delete(weight_S);
-    num_Q->delete(num_Q);
+    optS->delete(optS);
+    weightS->delete(weightS);
+    numQ->delete(numQ);
     return rpn;
 }
 
 ElemType calcRPN(RPN rpn) {
-    LStack num_S = LStack_init();
+    LStack numS = LStack_init();
     if (rpn->headNode->elem != HEAD_NODE || rpn->length(rpn) < 2)
         return ERROR;
 
@@ -110,27 +110,27 @@ ElemType calcRPN(RPN rpn) {
         switch (ptr->elem) {
         /* 操作符部分 */
         case '+' + OPERATOR:
-            num_S->push(num_S, num_S->pop(num_S) + num_S->pop(num_S));
+            numS->push(numS, numS->pop(numS) + numS->pop(numS));
             break;
         case '-' + OPERATOR:
-            temp = num_S->pop(num_S);
-            num_S->push(num_S, num_S->pop(num_S) - temp);
+            temp = numS->pop(numS);
+            numS->push(numS, numS->pop(numS) - temp);
             break;
         case '*' + OPERATOR:
-            num_S->push(num_S, num_S->pop(num_S) * num_S->pop(num_S));
+            numS->push(numS, numS->pop(numS) * numS->pop(numS));
             break;
         case '/' + OPERATOR:
-            temp = num_S->pop(num_S);
-            num_S->push(num_S, num_S->pop(num_S) / temp);
+            temp = numS->pop(numS);
+            numS->push(numS, numS->pop(numS) / temp);
             break;
         /* 数字部分 */
         default:
-            num_S->push(num_S, ptr->elem);
+            numS->push(numS, ptr->elem);
         }
     }
 
-    ElemType result = num_S->pop(num_S);
-    num_S->delete(num_S);
+    ElemType result = numS->pop(numS);
+    numS->delete(numS);
     return result;
 }
 
