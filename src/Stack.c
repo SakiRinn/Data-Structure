@@ -1,5 +1,4 @@
 #include "Stack.h"
-#include <stdio.h>
 
 Stack Stack_init(ind_t maxSize) {
     Stack self = (Stack)malloc(sizeof(struct _Stack));

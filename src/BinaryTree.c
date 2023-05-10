@@ -1,9 +1,4 @@
 #include "BinaryTree.h"
-#include <stdio.h>
-#include <sys/types.h>
-#include ".general.h"
-#include "QueueLink.h"
-#include "StackLink.h"
 
 GENERIC_LINK(pointer)
 GENERIC_QUEUE_LINK(pointer)
@@ -20,8 +15,13 @@ BiTree BiTree_init(ElemType arr[], ind_t len) {
         return NULL;
     // 2. 若不为EMPTY，则分配根结点，并将其存入队列
     BiTree BT = (BiTree)malloc(sizeof(struct BiTreeNode));
+    // attribute
     BT->elem = arr[i];
     BT->left = BT->right = NULL;
+    // method
+    BT->travPre     = BiTree_travPre;
+    BT->travIn      = BiTree_travIn;
+    BT->travPost    = BiTree_travPost;
     Q->add(Q, (pointer)BT);
     i++;
 
@@ -34,8 +34,13 @@ BiTree BiTree_init(ElemType arr[], ind_t len) {
             break;
         if (arr[i] != EMPTY) {
             tempNode->left = (BiTree)malloc(sizeof(struct BiTreeNode));
+            // attribute
             tempNode->left->elem = arr[i];
             tempNode->left->left = tempNode->left->right = NULL;
+            // method
+            tempNode->left->travPre     = BiTree_travPre;
+            tempNode->left->travIn      = BiTree_travIn;
+            tempNode->left->travPost    = BiTree_travPost;
             Q->add(Q, (pointer)tempNode->left);
         }
         i++;
@@ -44,8 +49,13 @@ BiTree BiTree_init(ElemType arr[], ind_t len) {
             break;
         if (arr[i] != EMPTY) {
             tempNode->right = (BiTree)malloc(sizeof(struct BiTreeNode));
+            // attribute
             tempNode->right->elem = arr[i];
             tempNode->right->left = tempNode->right->right = NULL;
+            // method
+            tempNode->right->travPre    = BiTree_travPre;
+            tempNode->right->travIn     = BiTree_travIn;
+            tempNode->right->travPost   = BiTree_travPost;
             Q->add(Q, (pointer)tempNode->right);
         }
         i++;
@@ -79,26 +89,34 @@ void BiTree_reTravPost(BiTree BT) {
     }
 }
 
-void BiTree_travPre(BiTree BT) {
+ElemType* BiTree_travPre(BiTree BT) {
+    Link printL = Link_init();
     LStack_pointer S = LStack_pointer_init();
     BiTree curBT = BT;
+
     while (curBT || !S->isEmpty(S)) {
         // left
         while (curBT) {
             S->push(S, (pointer)curBT);
-            printf("%d ", curBT->elem);         // 前序: 入栈时print
+            printL->insertEnd(printL, curBT->elem);     // 前序: 入栈时print
             curBT = curBT->left;
         }
         // right
         curBT = (BiTree)S->pop(S);
         curBT = curBT->right;
     }
+
+    ElemType* array = printL->toArray(printL);
+    printL->delete(printL);
     S->delete(S);
+    return array;
 }
 
-void BiTree_travIn(BiTree BT) {
+ElemType* BiTree_travIn(BiTree BT) {
+    Link printL = Link_init();
     LStack_pointer S = LStack_pointer_init();
     BiTree curBT = BT;
+
     while (curBT || !S->isEmpty(S)) {
         // left
         while (curBT) {
@@ -107,13 +125,18 @@ void BiTree_travIn(BiTree BT) {
         }
         // right
         curBT = (BiTree)S->pop(S);
-        printf("%d ", curBT->elem);             // 中序: 出栈时print
+        printL->insertEnd(printL, curBT->elem);         // 中序: 出栈时print
         curBT = curBT->right;
     }
+
+    ElemType* array = printL->toArray(printL);
+    printL->delete(printL);
     S->delete(S);
+    return array;
 }
 
-void BiTree_travPost(BiTree BT) {
+ElemType* BiTree_travPost(BiTree BT) {
+    Link printL = Link_init();
     LStack_pointer S = LStack_pointer_init(), printS = LStack_pointer_init();
     BiTree curBT = BT, printBT = NULL;
     while (curBT || !S->isEmpty(S)) {
@@ -124,37 +147,49 @@ void BiTree_travPost(BiTree BT) {
         }
         // right
         curBT = (BiTree)S->pop(S);
-        printS->push(printS, (pointer)curBT);        // 后序: 出栈时放入print栈
+        printS->push(printS, (pointer)curBT);           // 后序: 出栈时放入print栈
         curBT = curBT->right;
+
         // print
         if (!curBT) {
             do {
                 printBT = (BiTree)printS->pop(printS);
-                printf("%d ", printBT->elem);
+                printL->insertEnd(printL, printBT->elem);
             } while (!printS->isEmpty(printS) &&
                      ((BiTree)printS->top->elem)->right == printBT);
             printBT = NULL;
         }
     }
-    S->delete(S);
+
+    ElemType* array = printL->toArray(printL);
+    printL->delete(printL);
+    S->delete(S); printS->delete(printS);
+    return array;
 }
 
-void BiTree_travPost2(BiTree BT) {
-    LStack_pointer S = LStack_pointer_init(), print_S = LStack_pointer_init();
+ElemType* BiTree_travPost2(BiTree BT) {
+    Link printL = Link_init();
+    LStack_pointer S = LStack_pointer_init(), printS = LStack_pointer_init();
     BiTree curBT = BT;
+
     while (curBT || !S->isEmpty(S)) {
         // right
         while (curBT) {
             S->push(S, (pointer)curBT);
-            print_S->push(print_S, (pointer)curBT);    // (伪)前序: 入栈时放入print栈
+            printS->push(printS, (pointer)curBT);     // (伪)前序: 入栈时放入print栈
             curBT = curBT->right;
         }
         // left
         curBT = (BiTree)S->pop(S);
         curBT = curBT->left;
     }
+
     // print in reverse
-    while (!print_S->isEmpty(print_S))
-        printf("%d ", ((BiTree)print_S->pop(print_S))->elem);
-    S->delete(S);
+    while (!printS->isEmpty(printS))
+        printL->insertEnd(printL, ((BiTree)printS->pop(printS))->elem);
+
+    ElemType* array = printL->toArray(printL);
+    printL->delete(printL);
+    S->delete(S); printS->delete(printS);
+    return array;
 }

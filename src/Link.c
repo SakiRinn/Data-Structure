@@ -1,6 +1,4 @@
 #include "Link.h"
-#include <stdio.h>
-#include ".general.h"
 
 Link Link_init() {
     Link self = (Link)malloc(sizeof(struct _Link));
@@ -21,6 +19,7 @@ Link Link_init() {
     self->removeInd = Link_removeInd;
     self->delete    = Link_delete;
     self->print     = Link_print;
+    self->toArray   = Link_toArray;
     return self;
 }
 
@@ -128,4 +127,17 @@ void Link_print(Link self) {
             printf("%lld ", (long long)L->elem);
     }
     putchar('\n');
+}
+
+ElemType* Link_toArray(Link self) {
+    if (!self->length(self))
+        exit(EXIT_FAILURE);
+    ElemType* array = (ElemType*)malloc((self->length(self) + 1) * sizeof(ElemType));
+    memset(array, 0, self->length(self) + 1);
+    LPos ptr = self->headNode->next;
+    for (int i = 0; i < self->length(self); i++) {
+        array[i] = ptr->elem;
+        ptr = ptr->next;
+    }
+    return array;
 }

@@ -20,9 +20,14 @@
 
 typedef struct BiTreeNode *BiTree;
 struct BiTreeNode {
+    // attribute
     ElemType elem;
     BiTree left;
     BiTree right;
+    // method
+    ElemType* (*travPre)    (BiTree BT);
+    ElemType* (*travIn)     (BiTree BT);
+    ElemType* (*travPost)   (BiTree BT);
 };
 
 
@@ -46,18 +51,20 @@ void BiTree_reTravPost(BiTree BT);
  * 如果尝试成功, 则循环新的左子树; 反之, 则出栈并回溯到出栈结点, 然后继续"尝试".
  * 左子树循环内打印, 遍历 (入栈) 一个打印一个.
  *
- * @param BT
+ * @param BT 输入二叉树
+ * @return 动态数组
  */
-void BiTree_travPre(BiTree BT);
+ElemType* BiTree_travPre(BiTree BT);
 /**
  * @brief 中序遍历
  *
  * @details 大体思路与前序相同.
  * 与前序唯一的区别: 将入栈时打印改为出栈时打印, 即"尝试"一次右子树打印一次.
  *
- * @param BT
+ * @param BT 输入二叉树
+ * @return 动态数组
  */
-void BiTree_travIn(BiTree BT);
+ElemType* BiTree_travIn(BiTree BT);
 /**
  * @brief 后序遍历
  *
@@ -71,20 +78,22 @@ void BiTree_travIn(BiTree BT);
  * 右分支: 右子树退化为线性表时的情况.
  *
  * @param BT 输入二叉树
+ * @return 动态数组
  */
-void BiTree_travPost(BiTree BT);
+ElemType* BiTree_travPost(BiTree BT);
 /**
  * @brief 后序遍历2
  *
- * @details 通过反转前序遍历实现.
+ * @details 反转前序遍历
  * 前序遍历: 左 (打印) -> 根 -> 右.
  * 后序遍历: 左 -> 根 -> 右 (打印).
  * 后序遍历可视为前序遍历的反转, 即 "右 (打印) -> 根 -> 左" .
  * 利用栈, 将输出顺序也反转, 即得最终结果.
  *
  * @param BT 输入二叉树
+ * @return 动态数组
  */
-void BiTree_travPost2(BiTree BT);
+ElemType* BiTree_travPost2(BiTree BT);
 
 
 #endif

@@ -38,6 +38,7 @@ struct _Link {
     ElemType    (*removeInd)    (Link, ind_t);
     void        (*delete)       (Link);
     void        (*print)        (Link);
+    ElemType*   (*toArray)      (Link);
 };
 
 
@@ -67,6 +68,8 @@ ind_t Link_length(Link self);
 void Link_delete(Link self);
 // 打印
 void Link_print(Link self);
+// 转换为动态数组 (记得释放!)
+ElemType* Link_toArray(Link self);
 
 
 #endif

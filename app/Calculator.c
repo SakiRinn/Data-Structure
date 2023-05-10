@@ -20,12 +20,12 @@ RPN expr2RPN(char expr[]) {
 
         /* 数字部分 */
         if ((expr[i] >= '0' && expr[i] <= '9') || expr[i] == '.') {
-            // 若为数字, 入num_Q队列, 然后直接快进到下个循环
+            // 若为数字, 入numQ队列, 然后直接快进到下个循环
             numQ->add(numQ, expr[i]);
             continue;
         }
         else {
-            // 若不为数字, 将num_Q队列的字符转换为数字后加到rpn中, 然后清空队列
+            // 若不为数字, 将numQ队列的字符转换为数字后加到rpn中, 然后清空队列
             // 不快进, 而是继续之后的“操作符部分”
             char num_string[MAX_DIGIT] = {'\0'};
             int j = 0;

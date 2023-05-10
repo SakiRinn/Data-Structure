@@ -18,6 +18,7 @@
         elem_t (*removeInd)(Link_##elem_t, ind_t);                             \
         void (*delete)(Link_##elem_t);                                         \
         void (*print)(Link_##elem_t);                                          \
+        elem_t *(*toArray)(Link_##elem_t);                                     \
     };                                                                         \
     static LPos_##elem_t Link_##elem_t##_locate(Link_##elem_t self,            \
                                                 ind_t index) {                 \
@@ -118,6 +119,19 @@
         }                                                                      \
         putchar('\n');                                                         \
     }                                                                          \
+    elem_t *Link_##elem_t##_toArray(Link_##elem_t self) {                      \
+        if (!self->length(self))                                               \
+            exit(EXIT_FAILURE);                                                \
+        elem_t *array =                                                        \
+            (elem_t *)malloc((self->length(self) + 1) * sizeof(elem_t));       \
+        memset(array, 0, self->length(self) + 1);                              \
+        LPos_##elem_t ptr = self->headNode->next;                              \
+        for (int i = 0; i < self->length(self); i++) {                         \
+            array[i] = ptr->elem;                                              \
+            ptr = ptr->next;                                                   \
+        }                                                                      \
+        return array;                                                          \
+    }                                                                          \
     static Link_##elem_t Link_##elem_t##_init() {                              \
         Link_##elem_t self =                                                   \
             (Link_##elem_t)malloc(sizeof(struct _Link_##elem_t));              \
@@ -136,6 +150,7 @@
         self->removeInd = Link_##elem_t##_removeInd;                           \
         self->delete = Link_##elem_t##_delete;                                 \
         self->print = Link_##elem_t##_print;                                   \
+        self->toArray = Link_##elem_t##_toArray;                               \
         return self;                                                           \
     }
 #endif

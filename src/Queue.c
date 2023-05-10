@@ -1,5 +1,4 @@
 #include "Queue.h"
-#include ".general.h"
 
 Queue Queue_init(ind_t maxSize) {
     Queue self = (Queue)malloc(sizeof(struct _Queue));
