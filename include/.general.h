@@ -66,15 +66,11 @@ static inline bool isBigEndian() {
 static bool _isFloat(double value, void *addr, size_t size) {
     if (size == 4) {
         // is float?
-        u_int32_t num = 0;
-        for (int i = 0; i < 4; i++)
-            num += (u_int32_t)((unsigned char *)addr)[i] << (8 * i);
+        u_int32_t num = *((u_int32_t *)addr);
         return num != (u_int32_t)value ? true : false;
     } else if (size == 8) {
         // is double?
-        u_int64_t num = 0;
-        for (int i = 0; i < 8; i++)
-            num += (u_int64_t)((unsigned char *)addr)[i] << (8 * i);
+        u_int64_t num = *((u_int64_t *)addr);
         return num != (u_int64_t)value ? true : false;
     } else
         return false;
