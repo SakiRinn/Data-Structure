@@ -1,3 +1,12 @@
+/**
+ * @file generic/StackLink.h
+ * @brief 泛型链栈
+ *
+ * @par Macro Dependency
+ * @code {.C}
+ * GENERIC_LINK(elem_t)
+ * @endcode
+ */
 #ifndef GENERIC_STACK_LINK
 #define GENERIC_STACK_LINK(elem_t)                                             \
     typedef struct _LStack_##elem_t *LStack_##elem_t;                          \

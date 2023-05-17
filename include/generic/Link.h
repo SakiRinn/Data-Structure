@@ -1,3 +1,8 @@
+/**
+ * @file generic/Link.h
+ * @brief 泛型链表
+ *
+ */
 #ifndef GENERIC_LINK
 #define GENERIC_LINK(elem_t)                                                   \
     typedef struct Node_##elem_t *LPos_##elem_t;                               \
@@ -119,7 +124,7 @@
         }                                                                      \
         putchar('\n');                                                         \
     }                                                                          \
-    elem_t *Link_##elem_t##_toArray(Link_##elem_t self) {                      \
+    static elem_t *Link_##elem_t##_toArray(Link_##elem_t self) {               \
         if (!self->length(self))                                               \
             exit(EXIT_FAILURE);                                                \
         elem_t *array =                                                        \

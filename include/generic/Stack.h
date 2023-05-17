@@ -1,3 +1,8 @@
+/**
+ * @file generic/Stack.h
+ * @brief 泛型栈
+ *
+ */
 #ifndef GENERIC_STACK
 #define GENERIC_STACK(elem_t)                                                  \
     typedef struct _Stack_##elem_t *Stack_##elem_t;                            \

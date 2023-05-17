@@ -2,7 +2,7 @@
  * @file QueueLink.h
  * @brief 链队列
  *
- * @details 链队列的前指针front就是链表头结点的指针.
+ * 链队列的前指针front就是链表头结点的指针.
  */
 #ifndef _QUEUE_LINK_H_
 #define _QUEUE_LINK_H_

@@ -2,7 +2,7 @@
  * @file Queue.h
  * @brief 队列
  *
- * @details front和rear间的元素为存储的元素.
+ * front和rear间的元素为存储的元素.
  * 该方法可以有效地减少操作量, 无需每次增删元素都`realloc()`.
  */
 #ifndef _QUEUE_H_

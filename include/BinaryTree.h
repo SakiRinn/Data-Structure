@@ -9,6 +9,7 @@
 #include ".general.h"
 #include "StackLink.h"
 #include "QueueLink.h"
+#include "generic/BinaryTree.h"
 
 
 //-------------------------------------

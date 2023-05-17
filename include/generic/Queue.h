@@ -1,3 +1,8 @@
+/**
+ * @file generic/Queue.h
+ * @brief 泛型队列
+ *
+ */
 #ifndef GENERIC_QUEUE
 #define GENERIC_QUEUE(elem_t)                                                  \
     typedef struct _Queue_##elem_t *Queue_##elem_t;                            \

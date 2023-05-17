@@ -1,3 +1,12 @@
+/**
+ * @file generic/QueueLink.h
+ * @brief 泛型链队列
+ *
+ * @par Macro Dependency
+ * @code {.C}
+ * GENERIC_LINK(elem_t)
+ * @endcode
+ */
 #ifndef GENERIC_QUEUE_LINK
 #define GENERIC_QUEUE_LINK(elem_t)                                             \
     typedef struct _LQueue_##elem_t *LQueue_##elem_t;                          \
