@@ -5,6 +5,14 @@ GENERIC_LINK(pointer)
 GENERIC_QUEUE_LINK(pointer)
 GENERIC_STACK_LINK(pointer)
 
+inline void BiSTree_free(BiSTree BST, BiSTree preBST, BiSTree newBST) {
+    if (preBST->left == BST)
+        preBST->left = newBST;
+    else
+        preBST->right = newBST;
+    free(BST);
+}
+
 BiTree BiSTree_init(ElemType arr[], ind_t len) {
     // 根结点
     BiSTree root = (BiSTree)malloc(sizeof(struct BiSTreeNode));
@@ -22,14 +30,6 @@ BiTree BiSTree_init(ElemType arr[], ind_t len) {
     // 子结点
     for (int i = 1; i < len; i++)
         root->insert(root, arr[i]);
-}
-
-inline BiSTree BiSTree_free(BiSTree BST, BiSTree preBST, BiSTree newBST) {
-    if (preBST->left == BST)
-        preBST->left = newBST;
-    else
-        preBST->right = newBST;
-    free(BST);
 }
 
 BiSTree BiSTree_find(BiSTree BST, ElemType E) {

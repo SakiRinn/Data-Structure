@@ -3,7 +3,9 @@
  * @brief 双向栈
  *
  * 使用一个数组实现的一对栈.
- * 栈底分别位于两边, 只要有空位就能进栈. (未测试)
+ * 栈底分别位于两边, 只要有空位就能进栈.
+ *
+ * @attention 未测试!
  */
 #ifndef _STACK_DOUBLE_DIRECTION_H_
 #define _STACK_DOUBLE_DIRECTION_H_

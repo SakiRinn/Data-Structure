@@ -9,19 +9,19 @@ GENERIC_STACK_LINK(int)
 GENERIC_LINK(double)
 GENERIC_STACK_LINK(double)
 
-RPN expr2RPN(char expr[]) {
-    RPN rpn = Link_init();
+Expr expr2RPN(char exprString[]) {
+    Expr rpn = Link_init();
 
     LStack_double optS = LStack_double_init();     // 存操作符
     LStack_int weightS = LStack_int_init();        // 存操作符的权重
     LQueue_int numQ = LQueue_int_init();           // 实则为char队列, 存数字字符串
 
-    for (int i = 0; i < strlen(expr); i++) {
+    for (int i = 0; i < strlen(exprString); i++) {
 
         /* 数字部分 */
-        if ((expr[i] >= '0' && expr[i] <= '9') || expr[i] == '.') {
+        if ((exprString[i] >= '0' && exprString[i] <= '9') || exprString[i] == '.') {
             // 若为数字, 入numQ队列, 然后直接快进到下个循环
-            numQ->add(numQ, expr[i]);
+            numQ->add(numQ, exprString[i]);
             continue;
         }
         else {
@@ -39,7 +39,7 @@ RPN expr2RPN(char expr[]) {
 
         /* 操作符部分 */
         int weight;
-        switch (expr[i]) {
+        switch (exprString[i]) {
         // 加减乘除: 赋予权重
         case '+':
         case '-':
@@ -52,7 +52,7 @@ RPN expr2RPN(char expr[]) {
         // 左括号: 权重为0, 入栈后快进
         case '(':
             weightS->push(weightS, 0);
-            optS->push(optS, expr[i]);
+            optS->push(optS, exprString[i]);
             continue;
         // 右括号: 操作符逐个出栈, 直到遇到左括号
         case ')':
@@ -78,7 +78,7 @@ RPN expr2RPN(char expr[]) {
 
         // 操作符入栈
         weightS->push(weightS, weight);
-        optS->push(optS, expr[i]);
+        optS->push(optS, exprString[i]);
     }
 
     // 输出最后一个数
@@ -100,28 +100,28 @@ RPN expr2RPN(char expr[]) {
     return rpn;
 }
 
-ElemType calcRPN(RPN rpn) {
+ElemType calcRPN(Expr rpn) {
     LStack numS = LStack_init();
     if (rpn->headNode->elem != HEAD_NODE || rpn->length(rpn) < 2)
         return ERROR;
 
     for (LPos ptr = rpn->headNode->next; ptr; ptr = ptr->next) {
-        int temp;
+        int tmp;
         switch (ptr->elem) {
         /* 操作符部分 */
         case '+' + OPERATOR:
             numS->push(numS, numS->pop(numS) + numS->pop(numS));
             break;
         case '-' + OPERATOR:
-            temp = numS->pop(numS);
-            numS->push(numS, numS->pop(numS) - temp);
+            tmp = numS->pop(numS);
+            numS->push(numS, numS->pop(numS) - tmp);
             break;
         case '*' + OPERATOR:
             numS->push(numS, numS->pop(numS) * numS->pop(numS));
             break;
         case '/' + OPERATOR:
-            temp = numS->pop(numS);
-            numS->push(numS, numS->pop(numS) / temp);
+            tmp = numS->pop(numS);
+            numS->push(numS, numS->pop(numS) / tmp);
             break;
         /* 数字部分 */
         default:
@@ -134,8 +134,8 @@ ElemType calcRPN(RPN rpn) {
     return result;
 }
 
-void printRPN(RPN rpn) {
-    LPos data = rpn->headNode;
+void printExpr(Expr expr) {
+    LPos data = expr->headNode;
     for (LPos ptr = data->next; ptr; ptr = ptr->next) {
         switch ((int)ptr->elem) {
         case '+' + OPERATOR:
@@ -152,4 +152,8 @@ void printRPN(RPN rpn) {
         }
     }
     putchar('\n');
+}
+
+ExprTree exprTree(char expr[]) {
+
 }
