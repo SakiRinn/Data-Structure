@@ -100,33 +100,33 @@
         BT->travPost = BiTree_##elem_t##_travPost;                             \
         Q->add(Q, (pointer)BT);                                                \
         i++;                                                                   \
-        BiTree_##elem_t tempNode;                                              \
+        BiTree_##elem_t tmpNode;                                               \
         while (!Q->isEmpty(Q)) {                                               \
-            tempNode = (BiTree_##elem_t)Q->remove(Q);                          \
+            tmpNode = (BiTree_##elem_t)Q->remove(Q);                           \
             if (i >= len)                                                      \
                 break;                                                         \
             if (arr[i] != EMPTY) {                                             \
-                tempNode->left = (BiTree_##elem_t)malloc(                      \
+                tmpNode->left = (BiTree_##elem_t)malloc(                       \
                     sizeof(struct BiTreeNode_##elem_t));                       \
-                tempNode->left->elem = arr[i];                                 \
-                tempNode->left->left = tempNode->left->right = NULL;           \
-                tempNode->left->travPre = BiTree_##elem_t##_travPre;           \
-                tempNode->left->travIn = BiTree_##elem_t##_travIn;             \
-                tempNode->left->travPost = BiTree_##elem_t##_travPost;         \
-                Q->add(Q, (pointer)tempNode->left);                            \
+                tmpNode->left->elem = arr[i];                                  \
+                tmpNode->left->left = tmpNode->left->right = NULL;             \
+                tmpNode->left->travPre = BiTree_##elem_t##_travPre;            \
+                tmpNode->left->travIn = BiTree_##elem_t##_travIn;              \
+                tmpNode->left->travPost = BiTree_##elem_t##_travPost;          \
+                Q->add(Q, (pointer)tmpNode->left);                             \
             }                                                                  \
             i++;                                                               \
             if (i >= len)                                                      \
                 break;                                                         \
             if (arr[i] != EMPTY) {                                             \
-                tempNode->right = (BiTree_##elem_t)malloc(                     \
+                tmpNode->right = (BiTree_##elem_t)malloc(                      \
                     sizeof(struct BiTreeNode_##elem_t));                       \
-                tempNode->right->elem = arr[i];                                \
-                tempNode->right->left = tempNode->right->right = NULL;         \
-                tempNode->right->travPre = BiTree_##elem_t##_travPre;          \
-                tempNode->right->travIn = BiTree_##elem_t##_travIn;            \
-                tempNode->right->travPost = BiTree_##elem_t##_travPost;        \
-                Q->add(Q, (pointer)tempNode->right);                           \
+                tmpNode->right->elem = arr[i];                                 \
+                tmpNode->right->left = tmpNode->right->right = NULL;           \
+                tmpNode->right->travPre = BiTree_##elem_t##_travPre;           \
+                tmpNode->right->travIn = BiTree_##elem_t##_travIn;             \
+                tmpNode->right->travPost = BiTree_##elem_t##_travPost;         \
+                Q->add(Q, (pointer)tmpNode->right);                            \
             }                                                                  \
             i++;                                                               \
         }                                                                      \

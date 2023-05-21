@@ -26,37 +26,37 @@ BiTree BiTree_init(ElemType arr[], ind_t len) {
     i++;
 
     // 若队列非空，则取出一个结点，建立其左右孩子
-    BiTree tempNode;
+    BiTree tmpNode;
     while (!Q->isEmpty(Q)) {
-        tempNode = (BiTree)Q->remove(Q);
+        tmpNode = (BiTree)Q->remove(Q);
         // 1. 左孩子
         if (i >= len)
             break;
         if (arr[i] != EMPTY) {
-            tempNode->left = (BiTree)malloc(sizeof(struct BiTreeNode));
+            tmpNode->left = (BiTree)malloc(sizeof(struct BiTreeNode));
             // attribute
-            tempNode->left->elem = arr[i];
-            tempNode->left->left = tempNode->left->right = NULL;
+            tmpNode->left->elem = arr[i];
+            tmpNode->left->left = tmpNode->left->right = NULL;
             // method
-            tempNode->left->travPre     = BiTree_travPre;
-            tempNode->left->travIn      = BiTree_travIn;
-            tempNode->left->travPost    = BiTree_travPost;
-            Q->add(Q, (pointer)tempNode->left);
+            tmpNode->left->travPre      = BiTree_travPre;
+            tmpNode->left->travIn       = BiTree_travIn;
+            tmpNode->left->travPost     = BiTree_travPost;
+            Q->add(Q, (pointer)tmpNode->left);
         }
         i++;
         // 2. 右孩子
         if (i >= len)
             break;
         if (arr[i] != EMPTY) {
-            tempNode->right = (BiTree)malloc(sizeof(struct BiTreeNode));
+            tmpNode->right = (BiTree)malloc(sizeof(struct BiTreeNode));
             // attribute
-            tempNode->right->elem = arr[i];
-            tempNode->right->left = tempNode->right->right = NULL;
+            tmpNode->right->elem = arr[i];
+            tmpNode->right->left = tmpNode->right->right = NULL;
             // method
-            tempNode->right->travPre    = BiTree_travPre;
-            tempNode->right->travIn     = BiTree_travIn;
-            tempNode->right->travPost   = BiTree_travPost;
-            Q->add(Q, (pointer)tempNode->right);
+            tmpNode->right->travPre     = BiTree_travPre;
+            tmpNode->right->travIn      = BiTree_travIn;
+            tmpNode->right->travPost    = BiTree_travPost;
+            Q->add(Q, (pointer)tmpNode->right);
         }
         i++;
     }
